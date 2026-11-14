@@ -1,0 +1,37 @@
+# Private data: never commit the raw file, any other data, or anything derived from profile text
+profiles.csv
+*.csv
+data/
+*.parquet
+*.npy
+*.npz
+
+# Generated model artefacts and embeddings
+*.joblib
+*.pkl
+*.pickle
+*.pt
+*.pth
+*.safetensors
+*.onnx
+*.h5
+*.bin
+models/
+
+# Local environments
+.venv/
+venv/
+env/
+
+# Caches and notebook checkpoints
+__pycache__/
+*.pyc
+.cache/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Local run output
+run.ipynb
+
+# Operating system files
+.DS_Store
