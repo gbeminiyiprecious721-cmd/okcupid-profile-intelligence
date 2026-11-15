@@ -35,3 +35,14 @@ run.ipynb
 
 # Operating system files
 .DS_Store
+
+# Application
+node_modules/
+dist/
+.vite/
+coverage/
+.env
+.env.*
+*.local
+app/backend/artifacts/*
+!app/backend/artifacts/.gitkeep
