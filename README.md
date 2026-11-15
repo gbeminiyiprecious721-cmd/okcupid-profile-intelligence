@@ -91,6 +91,7 @@ The notebook was run with Python 3.12 on an Apple M1 Max. Package versions used:
 ## Project files
 
 * `okcupid_profile_intelligence.ipynb`: the complete analysis in 15 sections, from the problem and ethics to the model card and future work.
+* `OKCupid_Data_Science_Portfolio_Presentation.pptx`: a 12 slide presentation of the findings, using charts from the notebook.
 * `requirements.txt`: the packages the notebook needs, with the versions used.
 * `LICENSE`: the MIT licence for the code and text in this repository.
 * `.gitignore`: keeps the data, model files, local environments and private notes out of the repository.
@@ -102,4 +103,4 @@ The original code and text in this repository are released under the MIT licence
 
 ## Status
 
-The notebook is complete. A slide deck and an interactive application are planned: profile discovery with explanations as the central function, and a separate educational page for the drinking model. Neither exists yet.
+The notebook and the slide deck are complete. An interactive application is planned: profile discovery with explanations as the central function, and a separate educational page for the drinking model. It does not exist yet.
