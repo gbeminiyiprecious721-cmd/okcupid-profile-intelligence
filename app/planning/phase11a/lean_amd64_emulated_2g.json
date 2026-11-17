@@ -1,0 +1,85 @@
+{
+ "image": "profile-intelligence:render-amd64test",
+ "platform": "linux/amd64",
+ "cpus": "2",
+ "memory_limit": "2g",
+ "seconds_to_first_healthy_answer": 40.6,
+ "memory_after_start": {
+  "current_mb": 587,
+  "peak_mb": 587,
+  "anon_mb": 532,
+  "file_mb": 42,
+  "oom_kill": 0,
+  "high_events": 0,
+  "max_events": 0
+ },
+ "sequential": {
+  "ok": 10,
+  "median_s": 4.678,
+  "max_s": 4.949
+ },
+ "memory_after_sequential": {
+  "current_mb": 591,
+  "peak_mb": 591,
+  "anon_mb": 536,
+  "file_mb": 43,
+  "oom_kill": 0,
+  "high_events": 0,
+  "max_events": 0
+ },
+ "concurrent_4x3": {
+  "requests": 12,
+  "ok": 12,
+  "other_status": [],
+  "median_s": 9.72,
+  "max_s": 9.95,
+  "wall_s": 29.3
+ },
+ "memory_after_concurrent_4x3": {
+  "current_mb": 595,
+  "peak_mb": 595,
+  "anon_mb": 539,
+  "file_mb": 43,
+  "oom_kill": 0,
+  "high_events": 0,
+  "max_events": 0
+ },
+ "concurrent_4x2_long": {
+  "requests": 8,
+  "ok": 8,
+  "other_status": [],
+  "median_s": 42.05,
+  "max_s": 42.44,
+  "wall_s": 84.2
+ },
+ "memory_after_concurrent_4x2_long": {
+  "current_mb": 602,
+  "peak_mb": 607,
+  "anon_mb": 547,
+  "file_mb": 43,
+  "oom_kill": 0,
+  "high_events": 0,
+  "max_events": 0
+ },
+ "other_endpoints": [
+  200,
+  200,
+  200,
+  200
+ ],
+ "container_state": {
+  "status": "running",
+  "oom_killed": false,
+  "restarts": 0,
+  "exit_code": 0
+ },
+ "final_memory": {
+  "current_mb": 602,
+  "peak_mb": 607,
+  "anon_mb": 547,
+  "file_mb": 43,
+  "oom_kill": 0,
+  "high_events": 0,
+  "max_events": 0
+ }
+}

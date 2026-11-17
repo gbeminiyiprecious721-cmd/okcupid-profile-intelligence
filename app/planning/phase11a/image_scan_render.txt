@@ -1,0 +1,10 @@
+{
+  "files_in_image": 42716,
+  "private_hashes_checked": 4,
+  "application_files_matching_the_bundle": 74,
+  "findings": [],
+  "third_party_notes": [
+    "opt/venv/lib/python3.12/site-packages/transformers/testing_utils.py: contains a Hugging Face token"
+  ],
+  "third_party_notes_total": 1
+}

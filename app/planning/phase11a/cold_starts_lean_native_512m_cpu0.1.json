@@ -1,0 +1,23 @@
+{
+ "image": "profile-intelligence:render-arm64",
+ "runs": [
+  {
+   "seconds_to_healthy": 71.6,
+   "first_search_status": 200,
+   "first_search_seconds": 0.37,
+   "memory_mb": 511
+  },
+  {
+   "seconds_to_healthy": 65.6,
+   "first_search_status": 200,
+   "first_search_seconds": 0.51,
+   "memory_mb": 378
+  },
+  {
+   "seconds_to_healthy": 63.6,
+   "first_search_status": 200,
+   "first_search_seconds": 0.3,
+   "memory_mb": 363
+  }
+ ]
+}

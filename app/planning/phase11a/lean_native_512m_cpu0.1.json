@@ -1,0 +1,85 @@
+{
+ "image": "profile-intelligence:render-arm64",
+ "platform": "native",
+ "cpus": "0.1",
+ "memory_limit": "512m",
+ "seconds_to_first_healthy_answer": 74.2,
+ "memory_after_start": {
+  "current_mb": 418,
+  "peak_mb": 419,
+  "anon_mb": 345,
+  "file_mb": 61,
+  "oom_kill": 0,
+  "high_events": 0,
+  "max_events": 0
+ },
+ "sequential_30": {
+  "ok": 30,
+  "median_s": 0.598,
+  "max_s": 1.901
+ },
+ "memory_after_sequential": {
+  "current_mb": 426,
+  "peak_mb": 427,
+  "anon_mb": 352,
+  "file_mb": 60,
+  "oom_kill": 0,
+  "high_events": 0,
+  "max_events": 0
+ },
+ "concurrent_8x10": {
+  "requests": 80,
+  "ok": 80,
+  "other_status": [],
+  "median_s": 8.0,
+  "max_s": 11.5,
+  "wall_s": 83.4
+ },
+ "memory_after_concurrent_8x10": {
+  "current_mb": 465,
+  "peak_mb": 478,
+  "anon_mb": 384,
+  "file_mb": 58,
+  "oom_kill": 0,
+  "high_events": 0,
+  "max_events": 0
+ },
+ "concurrent_16x5_long": {
+  "requests": 80,
+  "ok": 80,
+  "other_status": [],
+  "median_s": 66.55,
+  "max_s": 72.71,
+  "wall_s": 309.4
+ },
+ "memory_after_concurrent_16x5_long": {
+  "current_mb": 427,
+  "peak_mb": 512,
+  "anon_mb": 369,
+  "file_mb": 26,
+  "oom_kill": 0,
+  "high_events": 0,
+  "max_events": 16
+ },
+ "other_endpoints": [
+  200,
+  200,
+  200,
+  200
+ ],
+ "container_state": {
+  "status": "running",
+  "oom_killed": false,
+  "restarts": 0,
+  "exit_code": 0
+ },
+ "final_memory": {
+  "current_mb": 427,
+  "peak_mb": 512,
+  "anon_mb": 369,
+  "file_mb": 26,
+  "oom_kill": 0,
+  "high_events": 0,
+  "max_events": 16
+ }
+}
