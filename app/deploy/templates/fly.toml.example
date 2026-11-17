@@ -1,0 +1,31 @@
+# EXAMPLE ONLY. Not used. For a possible later public deployment on Fly.io, after separate approval.
+# Prices and limits change often: check https://fly.io/docs/about/pricing/ before creating anything.
+app = "profile-intelligence-example"
+primary_region = "lhr"
+
+[build]
+  # Build the image from the bundle first (see deploy/README.md), then deploy that image.
+
+[env]
+  PROFILE_APP_MODE = "public"
+  PROFILE_TRUST_PROXY = "true"     # Fly's proxy appends the client address, and the app uses the last X-Forwarded-For entry
+  PROFILE_ALLOWED_ORIGINS = '["https://your.domain.example"]'
+  PORT = "8080"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"      # stops when idle: you pay for running time only, and the first visit waits for start up
+  auto_start_machines = true
+  min_machines_running = 0         # set to 1 to avoid the cold start, at about the price of an always on machine
+
+  [[http_service.checks]]
+    method = "GET"
+    path = "/api/v1/health"
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "90s"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "1gb"                   # the application needs about 620 MB. Use 2gb for headroom.
