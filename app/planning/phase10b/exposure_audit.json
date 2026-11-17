@@ -1,0 +1,15 @@
+{
+  "requests_made": 869,
+  "api_text_items": 50706,
+  "frontend_files": 20,
+  "seven_word_windows_checked": 133057,
+  "real_essays_scanned": 441351,
+  "real_seven_word_windows": 18207860,
+  "seven_word_matches_raw": 182,
+  "matches_that_are_fixed_answer_labels": 1,
+  "matches_that_are_the_number_words_in_our_code": 4,
+  "seven_word_matches_that_are_not_labels": 0,
+  "matching_windows": [],
+  "five_word_matches_informational": 5349,
+  "result": "pass"
+}

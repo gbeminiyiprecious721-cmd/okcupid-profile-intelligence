@@ -1,0 +1,89 @@
+{
+  "url": "http://127.0.0.1:8080",
+  "endpoints": {
+    "GET /health": {
+      "status": 200,
+      "bytes": 49,
+      "p50_ms": 1.04,
+      "p95_ms": 1.35,
+      "p99_ms": 1.49
+    },
+    "GET /meta": {
+      "status": 200,
+      "bytes": 3154,
+      "p50_ms": 1.1,
+      "p95_ms": 1.32,
+      "p99_ms": 1.53
+    },
+    "GET /lab/summary": {
+      "status": 200,
+      "bytes": 13251,
+      "p50_ms": 1.06,
+      "p95_ms": 1.28,
+      "p99_ms": 1.41
+    },
+    "GET /lab/figures (PNG)": {
+      "status": 200,
+      "bytes": 34548,
+      "p50_ms": 1.57,
+      "p95_ms": 1.81,
+      "p99_ms": 2.0
+    },
+    "GET /examples": {
+      "status": 200,
+      "bytes": 4323,
+      "p50_ms": 1.11,
+      "p95_ms": 1.36,
+      "p99_ms": 1.53
+    },
+    "GET /discover/profiles/{id}": {
+      "status": 200,
+      "bytes": 774,
+      "p50_ms": 1.08,
+      "p95_ms": 1.35,
+      "p99_ms": 1.48
+    },
+    "POST /discover/similar (both, k=5)": {
+      "status": 200,
+      "bytes": 4979,
+      "p50_ms": 20.4,
+      "p95_ms": 20.96,
+      "p99_ms": 21.71
+    },
+    "POST /discover/similar (both, k=10)": {
+      "status": 200,
+      "bytes": 9195,
+      "p50_ms": 21.15,
+      "p95_ms": 22.08,
+      "p99_ms": 23.44
+    },
+    "POST /discover/similar (embeddings)": {
+      "status": 200,
+      "bytes": 2544,
+      "p50_ms": 19.21,
+      "p95_ms": 19.84,
+      "p99_ms": 20.46
+    },
+    "POST /discover/similar (tfidf)": {
+      "status": 200,
+      "bytes": 2426,
+      "p50_ms": 3.08,
+      "p95_ms": 3.5,
+      "p99_ms": 3.71
+    },
+    "POST /discover/similar (2000 characters)": {
+      "status": 200,
+      "bytes": 4977,
+      "p50_ms": 56.29,
+      "p95_ms": 58.18,
+      "p99_ms": 61.39
+    },
+    "GET / (web page)": {
+      "status": 200,
+      "bytes": 800,
+      "p50_ms": 1.43,
+      "p95_ms": 1.64,
+      "p99_ms": 1.76
+    }
+  }
+}
