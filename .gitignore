@@ -46,3 +46,10 @@ coverage/
 *.local
 app/backend/artifacts/*
 !app/backend/artifacts/.gitkeep
+
+# Test output
+test-results/
+playwright-report/
+
+# deployment bundle, rebuilt on demand
+app/deploy/build/

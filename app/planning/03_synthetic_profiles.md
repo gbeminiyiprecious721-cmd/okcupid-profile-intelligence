@@ -1,6 +1,6 @@
 # Synthetic demonstration profiles
 
-Status: requirements for review (Phase 1). No profile has been generated yet.
+Status: requirements from Phase 1. The pool was generated in Phase 3. See `content/synthetic/DATASHEET.md` and the Phase 3 notes in 04_implementation_plan.md for where the result differs from these requirements.
 
 ## Why a synthetic pool
 

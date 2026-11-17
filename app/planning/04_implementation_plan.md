@@ -104,3 +104,36 @@ Each has my recommendation. Please confirm or change each one.
 
 * Work on feature branches. Nothing is pushed or deployed without your explicit approval.
 * The notebook, its saved outputs and `profiles.csv` are never modified.
+
+## Changes made in Phase 2
+
+* **Navigation is a sidebar plus a top bar,** as requested, instead of a top bar with Lab tabs. The sidebar lists every page along a gold thread. The top bar holds the mode badge, service status and theme control. On small screens the sidebar becomes a drawer.
+* **Dark theme added.** Each colour is defined once for light and dark. Dark contrast was measured: body text 16.1:1, controls 4.8:1.
+* **TypeScript is 5.9.3, not 7.** The linter (typescript-eslint) and the type generator (openapi-typescript) do not support TypeScript 6 or 7 yet.
+* **The backend has its own virtual environment** in `app/backend/.venv`, so the notebook's environment stays untouched. The machine learning packages join it in Phase 3 at the versions pinned in the root `requirements.txt`.
+* **`httpx` stays at 0.28.1.** The test client prints a deprecation warning that suggests `httpx2`. That package is not on the approved list, so it was not installed.
+* **Eight routes, not six.** Home, Discovery, Lab overview, Segments, Models, Fairness, Classify and About.
+
+## Changes made in Phase 3
+
+* **The answer frequencies are illustrative, not published aggregates.** Phase 1 said they would come from aggregate tables the notebook prints. The notebook only prints the most common answer and the missing rate for each field, so the rest are hand chosen. This is safer: no row level data was read to build the pool. It is recorded in the datasheet.
+* **The seven word overlap check needed a blocklist.** The first pool had 849 matching windows with real essays, from stock phrases such as "I am a work in progress and". Sentences were rewritten, and the few accidental cross sentence windows left are blocked in the generator. The check now finds zero.
+* **The search returns two separate result lists** (embeddings and TF-IDF), each with its own score, instead of one list. The scales differ, so the numbers are never combined.
+* **The index is built, not trained.** `NearestNeighbors` is fitted from the stored matrices when the server starts, which takes milliseconds. TF-IDF is fitted on the synthetic pool at build time with the notebook's settings except `min_df` (3 instead of 10, because the pool is 800 profiles, not 48,553 users).
+* **Hyphenated phone numbers are not counted as removed.** The notebook's phone rule needs a space or dot between digit groups and parity keeps it. Digits are dropped by the letters only rule anyway, so nothing numeric reaches the search.
+* **The classifier and segment assignment are untouched.** No supervised model was retrained, exported or loaded.
+
+## Changes made in Phase 4
+Discovery page connected to the API (form, method switch, result cards, explanations, profile dialog, two profile comparison, skeletons, error states, gold thread layer). `/meta` gained `answer_shares`. Inverse frequency weighting is documented in `app/frontend/src/lib/weighting.ts` and in `phase4_test_report.md`. Two lists sit side by side from 1536px and become tabs below that.
+
+## Changes made in Phase 5
+Lab pages built from `content/lab/lab_summary.json`, produced by `backend/scripts/export_lab_data.py` from the notebook's saved outputs and served by `GET /api/v1/lab/summary` and `GET /api/v1/lab/figures/{name}`. A new page `/lab/similarity` was added. Charts are HTML and SVG with no chart library. See `phase5_test_report.md`.
+
+## Changes made in Phase 6
+Educational classification page (`/lab/classify`), tier 1 classifier export (`scripts/export_classifier.py`), classifier service and endpoints (`/api/v1/classify/examples`, `/predict`, local mode only), fictional inputs in `content/classifier/fictional_inputs.json`, `pandas` added to the backend. See `phase6_export_and_test_report.md`.
+
+## Changes made in Phase 7
+Rate limiting, documentation off in public mode, origin validation, extra headers, route level code splitting, a web application Content Security Policy, httpx2, an npm override for an advisory, focus and layout fixes, a production configuration checker, an exposure audit, a performance measurement script, and new browser suites (CSP on the production build, accessibility, WebKit, performance). See `phase7_security_audit.md`.
+
+## Changes made in Phase 8A
+Deployment preparation only, nothing deployed: `app/deploy/` (hosting comparison, security configuration, monitoring, VoiceOver checklist, operations and rollback, Dockerfile, templates, draft CI), an allowlist bundle builder, a smoke test, a log summary, single origin web serving, a privacy safe request log, a configurable proxy depth, and a fix to the model download (found by a clean room test).
