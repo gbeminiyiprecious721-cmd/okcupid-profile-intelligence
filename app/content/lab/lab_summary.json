@@ -1,0 +1,1016 @@
+{
+  "schema_version": 1,
+  "provenance": {
+    "source": "okcupid_profile_intelligence.ipynb saved outputs",
+    "notebook_sha256": "ca8dafc2396c90b1a72dafe26165ea0de06dd504cabd5f8949d409a1c4c9028f",
+    "contents": "Aggregate findings only. No profile, essay or row level record.",
+    "figures": {
+      "clusters_vs_k.png": {
+        "sha256": "0958b936109c1d6852bceffce008fbaa6033c238c3cc9274660fe516299f3395",
+        "bytes": 49727
+      },
+      "confusion_matrix.png": {
+        "sha256": "4ad63aae80ed9d8ac096ef73ef42ea15e70f80a06a82b61e2e3a1aa3f58afa7c",
+        "bytes": 34548
+      }
+    }
+  },
+  "overview": {
+    "dataset": {
+      "profiles": 59946,
+      "columns": 31,
+      "labelled": 56961,
+      "unlabelled": 2985,
+      "train": 45568,
+      "test": 11393,
+      "segmented": 46788,
+      "no_text": 1765,
+      "california": 59855,
+      "essay_answers_min": 40721,
+      "essay_answers_max": 54458,
+      "income_not_given_pct": 80.8,
+      "period": "June 2011 to July 2012"
+    },
+    "target": {
+      "levels": [
+        {
+          "level": "socially",
+          "count": 41780,
+          "share_pct": 73.3
+        },
+        {
+          "level": "often+",
+          "count": 5957,
+          "share_pct": 10.5
+        },
+        {
+          "level": "rarely",
+          "count": 5957,
+          "share_pct": 10.5
+        },
+        {
+          "level": "not at all",
+          "count": 3267,
+          "share_pct": 5.7
+        }
+      ],
+      "largest_to_smallest": 12.8
+    },
+    "baseline_train": {
+      "accuracy": 0.733,
+      "macro_f1": 0.212
+    },
+    "missing": [
+      {
+        "field": "offspring",
+        "missing_pct": 59.3
+      },
+      {
+        "field": "diet",
+        "missing_pct": 40.7
+      },
+      {
+        "field": "religion",
+        "missing_pct": 33.7
+      },
+      {
+        "field": "pets",
+        "missing_pct": 33.2
+      },
+      {
+        "field": "drugs",
+        "missing_pct": 23.5
+      },
+      {
+        "field": "sign",
+        "missing_pct": 18.4
+      },
+      {
+        "field": "job",
+        "missing_pct": 13.7
+      },
+      {
+        "field": "education",
+        "missing_pct": 11.1
+      },
+      {
+        "field": "ethnicity",
+        "missing_pct": 9.5
+      },
+      {
+        "field": "smokes",
+        "missing_pct": 9.2
+      }
+    ],
+    "associations": [
+      {
+        "factor": "Drug use",
+        "measure": "Cramér's V",
+        "effect": 0.187,
+        "low": 0.179,
+        "high": 0.196
+      },
+      {
+        "factor": "Smoking",
+        "measure": "Cramér's V",
+        "effect": 0.127,
+        "low": 0.121,
+        "high": 0.135
+      },
+      {
+        "factor": "Sex",
+        "measure": "Cramér's V",
+        "effect": 0.036,
+        "low": 0.028,
+        "high": 0.044
+      },
+      {
+        "factor": "Age",
+        "measure": "share of variation explained",
+        "effect": 0.016,
+        "low": 0.014,
+        "high": 0.019
+      },
+      {
+        "factor": "Essay length",
+        "measure": "share of variation explained",
+        "effect": 0.001,
+        "low": 0.0,
+        "high": 0.002
+      }
+    ],
+    "drug_contrast": {
+      "often_group_pct": 43.7,
+      "often_group_n": 323,
+      "never_group_pct": 6.7,
+      "never_group_n": 28908
+    }
+  },
+  "segments": {
+    "items": [
+      {
+        "id": 1,
+        "name": "technical men",
+        "users": 9461,
+        "share_pct": 20.2,
+        "mean_age": 30.0,
+        "male_pct": 91.0,
+        "top_words": [
+          "dont",
+          "think",
+          "really",
+          "ive",
+          "say",
+          "tall",
+          "lot",
+          "way",
+          "know",
+          "probably"
+        ],
+        "over_represented": [
+          {
+            "answer": "job_computer / hardware / software",
+            "ratio": 1.6
+          },
+          {
+            "answer": "drugs_sometimes",
+            "ratio": 1.4
+          },
+          {
+            "answer": "job_science / tech / engineering",
+            "ratio": 1.3
+          },
+          {
+            "answer": "pets_likes dogs and likes cats",
+            "ratio": 1.3
+          },
+          {
+            "answer": "body_type_athletic",
+            "ratio": 1.3
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "social and family minded women",
+        "users": 10522,
+        "share_pct": 22.5,
+        "mean_age": 29.2,
+        "male_pct": 18.0,
+        "top_words": [
+          "girl",
+          "family",
+          "really",
+          "dont",
+          "laugh",
+          "dancing",
+          "person",
+          "think",
+          "favorite",
+          "school"
+        ],
+        "over_represented": [
+          {
+            "answer": "body_type_curvy",
+            "ratio": 2.2
+          },
+          {
+            "answer": "but wants them",
+            "ratio": 1.7
+          },
+          {
+            "answer": "job_student",
+            "ratio": 1.4
+          },
+          {
+            "answer": "pets_likes dogs and has cats",
+            "ratio": 1.4
+          },
+          {
+            "answer": "job_education / academia",
+            "ratio": 1.4
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "brief profiles",
+        "users": 5727,
+        "share_pct": 12.2,
+        "mean_age": 28.3,
+        "male_pct": 70.0,
+        "top_words": [
+          "lol",
+          "ask",
+          "wanna",
+          "phone",
+          "smile",
+          "sports",
+          "good time",
+          "want know",
+          "fun",
+          "guy"
+        ],
+        "over_represented": [
+          {
+            "answer": "education_level_missing",
+            "ratio": 2.7
+          },
+          {
+            "answer": "job_missing",
+            "ratio": 2.2
+          },
+          {
+            "answer": "smokes_missing",
+            "ratio": 2.1
+          },
+          {
+            "answer": "pets_missing",
+            "ratio": 1.8
+          },
+          {
+            "answer": "diet_type_missing",
+            "ratio": 1.4
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "name": "recent arrivals in San Francisco",
+        "users": 6960,
+        "share_pct": 14.9,
+        "mean_age": 29.4,
+        "male_pct": 77.0,
+        "top_words": [
+          "san",
+          "sf",
+          "moved",
+          "san francisco",
+          "francisco",
+          "city",
+          "bay",
+          "area",
+          "bay area",
+          "new"
+        ],
+        "over_represented": [
+          {
+            "answer": "job_science / tech / engineering",
+            "ratio": 1.6
+          },
+          {
+            "answer": "job_sales / marketing / biz dev",
+            "ratio": 1.6
+          },
+          {
+            "answer": "pets_likes dogs",
+            "ratio": 1.6
+          },
+          {
+            "answer": "body_type_athletic",
+            "ratio": 1.5
+          },
+          {
+            "answer": "offspring_doesn't have kids",
+            "ratio": 1.4
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "name": "culture and nightlife",
+        "users": 6964,
+        "share_pct": 14.9,
+        "mean_age": 28.5,
+        "male_pct": 64.0,
+        "top_words": [
+          "books",
+          "black",
+          "dead",
+          "arrested",
+          "arrested development",
+          "shows",
+          "radiohead",
+          "shit",
+          "development",
+          "punk"
+        ],
+        "over_represented": [
+          {
+            "answer": "drugs_sometimes",
+            "ratio": 1.8
+          },
+          {
+            "answer": "drugs_missing",
+            "ratio": 1.7
+          },
+          {
+            "answer": "smokes_sometimes",
+            "ratio": 1.7
+          },
+          {
+            "answer": "smokes_when drinking",
+            "ratio": 1.6
+          },
+          {
+            "answer": "smokes_missing",
+            "ratio": 1.5
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "name": "older professionals",
+        "users": 7154,
+        "share_pct": 15.3,
+        "mean_age": 49.4,
+        "male_pct": 52.0,
+        "top_words": [
+          "woman",
+          "relationship",
+          "share",
+          "partner",
+          "enjoy",
+          "great",
+          "kids",
+          "healthy",
+          "humor",
+          "children"
+        ],
+        "over_represented": [
+          {
+            "answer": "job_medicine / health",
+            "ratio": 1.6
+          },
+          {
+            "answer": "education_level_masters",
+            "ratio": 1.5
+          },
+          {
+            "answer": "job_education / academia",
+            "ratio": 1.4
+          },
+          {
+            "answer": "pets_likes dogs and has cats",
+            "ratio": 1.4
+          },
+          {
+            "answer": "pets_has dogs",
+            "ratio": 1.3
+          }
+        ]
+      }
+    ],
+    "population": {
+      "mean_age": 32.3,
+      "male_pct": 60.0
+    },
+    "stability": [
+      {
+        "k": 3,
+        "new_seed": 1.0,
+        "new_sample": 0.99
+      },
+      {
+        "k": 4,
+        "new_seed": 0.99,
+        "new_sample": 0.98
+      },
+      {
+        "k": 5,
+        "new_seed": 0.97,
+        "new_sample": 0.97
+      },
+      {
+        "k": 6,
+        "new_seed": 0.98,
+        "new_sample": 0.97
+      },
+      {
+        "k": 7,
+        "new_seed": 0.77,
+        "new_sample": 0.74
+      },
+      {
+        "k": 8,
+        "new_seed": 0.64,
+        "new_sample": 0.64
+      }
+    ],
+    "stability_k6": {
+      "new_seed": 0.98,
+      "new_sample": 0.97
+    },
+    "silhouette": {
+      "k2": 0.085,
+      "k6_about": 0.05,
+      "k10": 0.04,
+      "maximum": 0.085,
+      "weak_below": 0.25,
+      "clear_above": 0.5
+    },
+    "reduction": {
+      "text_components": 20,
+      "text_variation_pct": 44,
+      "lifestyle_components": 15,
+      "lifestyle_variation_pct": 69,
+      "text_columns": 384,
+      "lifestyle_columns": 84
+    },
+    "drinking_check": {
+      "highest_segment": 5,
+      "highest_often_pct": 17,
+      "lowest_segment": 6,
+      "lowest_often_pct": 5,
+      "lowest_rarely_or_never_pct": 27,
+      "others_often_low_pct": 8,
+      "others_often_high_pct": 12
+    },
+    "assignment_check": {
+      "agreement_pct": 100.0,
+      "users_checked": 484
+    }
+  },
+  "models": {
+    "validation": [
+      {
+        "model": "Logistic regression",
+        "inputs": "Structured fields and essay words",
+        "validation_macro_f1": 0.387,
+        "fold_spread": 0.004,
+        "training_macro_f1": 0.65,
+        "validation_accuracy": 0.527
+      },
+      {
+        "model": "Logistic regression",
+        "inputs": "Structured fields, essay words and segment",
+        "validation_macro_f1": 0.386,
+        "fold_spread": 0.003,
+        "training_macro_f1": 0.65,
+        "validation_accuracy": 0.525
+      },
+      {
+        "model": "Logistic regression",
+        "inputs": "Structured fields and essay words, drinking words removed",
+        "validation_macro_f1": 0.372,
+        "fold_spread": 0.004,
+        "training_macro_f1": 0.641,
+        "validation_accuracy": 0.514
+      },
+      {
+        "model": "Logistic regression",
+        "inputs": "Essay words (TF-IDF)",
+        "validation_macro_f1": 0.351,
+        "fold_spread": 0.003,
+        "training_macro_f1": 0.644,
+        "validation_accuracy": 0.492
+      },
+      {
+        "model": "Naive Bayes",
+        "inputs": "Essay words (TF-IDF)",
+        "validation_macro_f1": 0.342,
+        "fold_spread": 0.005,
+        "training_macro_f1": 0.488,
+        "validation_accuracy": 0.541
+      },
+      {
+        "model": "Logistic regression",
+        "inputs": "Structured fields and essay meaning",
+        "validation_macro_f1": 0.34,
+        "fold_spread": 0.004,
+        "training_macro_f1": 0.372,
+        "validation_accuracy": 0.426
+      },
+      {
+        "model": "Logistic regression",
+        "inputs": "Essay words, drinking words removed",
+        "validation_macro_f1": 0.331,
+        "fold_spread": 0.002,
+        "training_macro_f1": 0.637,
+        "validation_accuracy": 0.477
+      },
+      {
+        "model": "Gradient boosting",
+        "inputs": "Structured fields",
+        "validation_macro_f1": 0.32,
+        "fold_spread": 0.003,
+        "training_macro_f1": 0.405,
+        "validation_accuracy": 0.407
+      },
+      {
+        "model": "Logistic regression",
+        "inputs": "Structured fields",
+        "validation_macro_f1": 0.317,
+        "fold_spread": 0.004,
+        "training_macro_f1": 0.328,
+        "validation_accuracy": 0.402
+      },
+      {
+        "model": "Logistic regression",
+        "inputs": "Essay meaning (embeddings)",
+        "validation_macro_f1": 0.287,
+        "fold_spread": 0.004,
+        "training_macro_f1": 0.314,
+        "validation_accuracy": 0.36
+      },
+      {
+        "model": "Baseline",
+        "inputs": "Always predicts 'socially'",
+        "validation_macro_f1": 0.212,
+        "fold_spread": 0.0,
+        "training_macro_f1": 0.212,
+        "validation_accuracy": 0.733
+      }
+    ],
+    "tuning": [
+      {
+        "c": 0.3,
+        "validation_macro_f1": 0.381,
+        "fold_spread": 0.004,
+        "training_macro_f1": 0.531
+      },
+      {
+        "c": 1.0,
+        "validation_macro_f1": 0.387,
+        "fold_spread": 0.004,
+        "training_macro_f1": 0.65
+      },
+      {
+        "c": 3.0,
+        "validation_macro_f1": 0.383,
+        "fold_spread": 0.003,
+        "training_macro_f1": 0.749
+      },
+      {
+        "c": 10.0,
+        "validation_macro_f1": 0.375,
+        "fold_spread": 0.003,
+        "training_macro_f1": 0.841
+      },
+      {
+        "c": 30.0,
+        "validation_macro_f1": 0.362,
+        "fold_spread": 0.003,
+        "training_macro_f1": 0.921
+      }
+    ],
+    "tuning_best_c": 1.0,
+    "segment_effect": {
+      "fold_changes": [
+        -0.0022,
+        -0.0037,
+        0.0007,
+        -0.0021,
+        -0.0013
+      ],
+      "mean_change": -0.0017,
+      "fold_spread": 0.0014
+    },
+    "drinking_words": {
+      "users_mentioning_pct": 47.1
+    },
+    "test": {
+      "users": 11393,
+      "c": 1.0,
+      "baseline": {
+        "macro_f1": 0.212,
+        "accuracy": 0.734
+      },
+      "final": {
+        "macro_f1": 0.386,
+        "accuracy": 0.517,
+        "validation_macro_f1": 0.387
+      },
+      "per_class": [
+        {
+          "level": "not at all",
+          "precision": 0.172,
+          "recall": 0.395,
+          "f1": 0.24,
+          "support": 653
+        },
+        {
+          "level": "rarely",
+          "precision": 0.216,
+          "recall": 0.405,
+          "f1": 0.282,
+          "support": 1191
+        },
+        {
+          "level": "socially",
+          "precision": 0.839,
+          "recall": 0.541,
+          "f1": 0.657,
+          "support": 8357
+        },
+        {
+          "level": "often+",
+          "precision": 0.278,
+          "recall": 0.532,
+          "f1": 0.365,
+          "support": 1192
+        }
+      ],
+      "macro_precision": 0.376,
+      "macro_recall": 0.468,
+      "intervals": [
+        {
+          "metric": "final model",
+          "score": 0.386,
+          "low": 0.376,
+          "high": 0.397
+        },
+        {
+          "metric": "baseline",
+          "score": 0.212,
+          "low": 0.21,
+          "high": 0.213
+        },
+        {
+          "metric": "recall not at all",
+          "score": 0.395,
+          "low": 0.356,
+          "high": 0.435
+        },
+        {
+          "metric": "recall rarely",
+          "score": 0.405,
+          "low": 0.378,
+          "high": 0.435
+        },
+        {
+          "metric": "recall socially",
+          "score": 0.541,
+          "low": 0.53,
+          "high": 0.551
+        },
+        {
+          "metric": "recall often+",
+          "score": 0.532,
+          "low": 0.502,
+          "high": 0.562
+        },
+        {
+          "metric": "gain over baseline",
+          "score": 0.175,
+          "low": 0.164,
+          "high": 0.186
+        }
+      ],
+      "often_predicted_socially_pct": 34,
+      "not_at_all_predicted_rarely_pct": 34
+    },
+    "confusion_pct": {
+      "labels": [
+        "not at all",
+        "rarely",
+        "socially",
+        "often+"
+      ],
+      "rows": [
+        [
+          40,
+          34,
+          20,
+          6
+        ],
+        [
+          24,
+          40,
+          28,
+          7
+        ],
+        [
+          11,
+          17,
+          54,
+          18
+        ],
+        [
+          6,
+          7,
+          34,
+          53
+        ]
+      ],
+      "source": "Rounded percentages transcribed by hand from the figure in notebook section 12.3. The notebook prints no table of them, and they were not recomputed."
+    }
+  },
+  "similarity": {
+    "searchable_users": 46788,
+    "tfidf_columns": 20000,
+    "embedding_columns": 384,
+    "queries": 5000,
+    "neighbours": 10,
+    "average_similarity": {
+      "tfidf": 0.13,
+      "embeddings": 0.7
+    },
+    "fields": [
+      {
+        "field": "smokes",
+        "chance": 0.664,
+        "tfidf": 0.675,
+        "embeddings": 0.69,
+        "tfidf_lift": 1.017,
+        "embeddings_lift": 1.039
+      },
+      {
+        "field": "drugs",
+        "chance": 0.704,
+        "tfidf": 0.739,
+        "embeddings": 0.734,
+        "tfidf_lift": 1.048,
+        "embeddings_lift": 1.042
+      },
+      {
+        "field": "diet_type",
+        "chance": 0.634,
+        "tfidf": 0.649,
+        "embeddings": 0.66,
+        "tfidf_lift": 1.023,
+        "embeddings_lift": 1.042
+      },
+      {
+        "field": "education_level",
+        "chance": 0.398,
+        "tfidf": 0.434,
+        "embeddings": 0.438,
+        "tfidf_lift": 1.091,
+        "embeddings_lift": 1.1
+      },
+      {
+        "field": "job",
+        "chance": 0.082,
+        "tfidf": 0.126,
+        "embeddings": 0.126,
+        "tfidf_lift": 1.549,
+        "embeddings_lift": 1.544
+      },
+      {
+        "field": "offspring",
+        "chance": 0.172,
+        "tfidf": 0.212,
+        "embeddings": 0.22,
+        "tfidf_lift": 1.232,
+        "embeddings_lift": 1.276
+      },
+      {
+        "field": "pets",
+        "chance": 0.202,
+        "tfidf": 0.214,
+        "embeddings": 0.224,
+        "tfidf_lift": 1.058,
+        "embeddings_lift": 1.109
+      },
+      {
+        "field": "status",
+        "chance": 0.865,
+        "tfidf": 0.859,
+        "embeddings": 0.888,
+        "tfidf_lift": 0.993,
+        "embeddings_lift": 1.027
+      },
+      {
+        "field": "body_type",
+        "chance": 0.191,
+        "tfidf": 0.209,
+        "embeddings": 0.214,
+        "tfidf_lift": 1.094,
+        "embeddings_lift": 1.122
+      },
+      {
+        "field": "drinks_level",
+        "chance": 0.564,
+        "tfidf": 0.575,
+        "embeddings": 0.603,
+        "tfidf_lift": 1.02,
+        "embeddings_lift": 1.07
+      },
+      {
+        "field": "age_band",
+        "chance": 0.218,
+        "tfidf": 0.295,
+        "embeddings": 0.277,
+        "tfidf_lift": 1.353,
+        "embeddings_lift": 1.271
+      },
+      {
+        "field": "sex",
+        "chance": 0.519,
+        "tfidf": 0.598,
+        "embeddings": 0.567,
+        "tfidf_lift": 1.153,
+        "embeddings_lift": 1.094
+      }
+    ],
+    "invented_profile_demo": {
+      "same_meaning": {
+        "tfidf": 0.0,
+        "embeddings": 0.72
+      },
+      "different": {
+        "tfidf": 0.0,
+        "embeddings": 0.08
+      }
+    },
+    "representation_cost": {
+      "TF-IDF": {
+        "columns": 20000,
+        "memory_mb": 100,
+        "seconds": 18
+      },
+      "sentence embeddings": {
+        "columns": 384,
+        "memory_mb": 149,
+        "seconds": 52
+      }
+    }
+  },
+  "fairness": {
+    "subgroups": [
+      {
+        "kind": "sex",
+        "group": "f",
+        "users": 4644,
+        "often_share": 0.095,
+        "macro_f1": 0.393
+      },
+      {
+        "kind": "sex",
+        "group": "m",
+        "users": 6749,
+        "often_share": 0.111,
+        "macro_f1": 0.381
+      },
+      {
+        "kind": "age_band",
+        "group": "18 to 24",
+        "users": 2041,
+        "often_share": 0.115,
+        "macro_f1": 0.386
+      },
+      {
+        "kind": "age_band",
+        "group": "25 to 29",
+        "users": 3343,
+        "often_share": 0.123,
+        "macro_f1": 0.38
+      },
+      {
+        "kind": "age_band",
+        "group": "30 to 34",
+        "users": 2410,
+        "often_share": 0.11,
+        "macro_f1": 0.387
+      },
+      {
+        "kind": "age_band",
+        "group": "35 to 44",
+        "users": 2266,
+        "often_share": 0.091,
+        "macro_f1": 0.393
+      },
+      {
+        "kind": "age_band",
+        "group": "45 and over",
+        "users": 1333,
+        "often_share": 0.056,
+        "macro_f1": 0.327
+      },
+      {
+        "kind": "essay_length",
+        "group": "shortest quarter",
+        "users": 2887,
+        "often_share": 0.12,
+        "macro_f1": 0.369
+      },
+      {
+        "kind": "essay_length",
+        "group": "second quarter",
+        "users": 2788,
+        "often_share": 0.099,
+        "macro_f1": 0.384
+      },
+      {
+        "kind": "essay_length",
+        "group": "third quarter",
+        "users": 2875,
+        "often_share": 0.104,
+        "macro_f1": 0.389
+      },
+      {
+        "kind": "essay_length",
+        "group": "longest quarter",
+        "users": 2843,
+        "often_share": 0.095,
+        "macro_f1": 0.397
+      },
+      {
+        "kind": "segment",
+        "group": "Segment 1",
+        "users": 2254,
+        "often_share": 0.112,
+        "macro_f1": 0.379
+      },
+      {
+        "kind": "segment",
+        "group": "Segment 2",
+        "users": 2556,
+        "often_share": 0.08,
+        "macro_f1": 0.376
+      },
+      {
+        "kind": "segment",
+        "group": "Segment 3",
+        "users": 1166,
+        "often_share": 0.104,
+        "macro_f1": 0.371
+      },
+      {
+        "kind": "segment",
+        "group": "Segment 4",
+        "users": 1706,
+        "often_share": 0.099,
+        "macro_f1": 0.373
+      },
+      {
+        "kind": "segment",
+        "group": "Segment 5",
+        "users": 1610,
+        "often_share": 0.181,
+        "macro_f1": 0.389
+      },
+      {
+        "kind": "segment",
+        "group": "Segment 6",
+        "users": 1727,
+        "often_share": 0.057,
+        "macro_f1": 0.36
+      },
+      {
+        "kind": "segment",
+        "group": "no text",
+        "users": 374,
+        "often_share": 0.147,
+        "macro_f1": 0.275
+      }
+    ],
+    "privacy": {
+      "essays_with_web_link": 3485,
+      "essays_with_handle": 83,
+      "essays_with_email": 63,
+      "essays_with_phone": 11,
+      "unique_on_six_fields": {
+        "unique": 30977,
+        "of": 48175,
+        "pct": 64.3
+      },
+      "unique_on_four_fields": {
+        "unique": 9861,
+        "of": 59943,
+        "pct": 16.5
+      }
+    }
+  }
+}
