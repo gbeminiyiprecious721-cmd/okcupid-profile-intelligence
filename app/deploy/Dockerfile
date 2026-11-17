@@ -21,7 +21,9 @@ ENV PATH=/opt/venv/bin:$PATH
 COPY backend/requirements.txt /tmp/requirements.txt
 # CPU only PyTorch. The default Linux wheel carries about 2 GB of CUDA libraries that this application never uses.
 RUN pip install torch==2.15.0 --index-url https://download.pytorch.org/whl/cpu \
- && pip install -r /tmp/requirements.txt
+ && pip install -r /tmp/requirements.txt \
+ && pip uninstall -y pandas
+# ^ nothing the public application serves needs pandas (only the local only classifier does); removing it saves memory
 COPY backend /app/backend
 COPY content /app/content
 # Fetch the model at the pinned revision, then build the search index from the synthetic profiles (a few seconds).
@@ -46,7 +48,7 @@ COPY BUNDLE_MANIFEST.json /app/BUNDLE_MANIFEST.json
 # The model cache is read only at run time and the network is not used: HF_HUB_OFFLINE stops any lookup.
 ENV PATH=/opt/venv/bin:$PATH \
     PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
-    HF_HOME=/opt/hf HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \
+    HF_HOME=/opt/hf HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 TOKENIZERS_PARALLELISM=false MALLOC_ARENA_MAX=2 \
     PROFILE_APP_MODE=public \
     PROFILE_ARTIFACT_DIR=/opt/artifacts \
     PROFILE_STATIC_DIR=/app/frontend/dist \

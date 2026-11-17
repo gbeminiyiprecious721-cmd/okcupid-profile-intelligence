@@ -1,0 +1,17 @@
+# Render Blueprint for Profile Intelligence: one Docker web service on the Free plan.
+# NOT APPLIED. Nothing here has been created on Render. See app/planning/phase11a/README.md before using it.
+# There are no secrets: the application is public mode only and reads no credential. Every value below is safe to
+# keep in Git.
+services:
+  - type: web
+    name: profile-intelligence
+    runtime: docker
+    plan: free
+    # region: choose the one closest to your visitors (it cannot be changed later). The default is oregon.
+    dockerfilePath: ./app/deploy/Dockerfile.render
+    dockerContext: .
+    healthCheckPath: /api/v1/health
+    autoDeployTrigger: "off"      # a deploy happens only when you ask for one, never on a push
+    envVars:
+      - key: PROFILE_APP_MODE
+        value: public
