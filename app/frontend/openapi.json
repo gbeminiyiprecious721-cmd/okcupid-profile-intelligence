@@ -1,0 +1,2597 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Profile Intelligence API",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Health",
+        "operationId": "health_api_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/meta": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Meta",
+        "operationId": "meta_api_v1_meta_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetaResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/examples": {
+      "get": {
+        "tags": [
+          "discovery"
+        ],
+        "summary": "Examples",
+        "description": "Six invented starter profiles. They are not part of the searchable pool.",
+        "operationId": "examples_api_v1_examples_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExamplesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/discover/similar": {
+      "post": {
+        "tags": [
+          "discovery"
+        ],
+        "summary": "Similar",
+        "description": "The most similar profiles in the synthetic pool for a fictional profile description.",
+        "operationId": "similar_api_v1_discover_similar_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SimilarRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimilarResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/discover/profiles/{profile_id}": {
+      "get": {
+        "tags": [
+          "discovery"
+        ],
+        "summary": "Profile",
+        "description": "One invented profile in full.",
+        "operationId": "profile_api_v1_discover_profiles__profile_id__get",
+        "parameters": [
+          {
+            "name": "profile_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^(syn|ex)_[0-9a-f]{8}$",
+              "title": "Profile Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/lab/summary": {
+      "get": {
+        "tags": [
+          "lab"
+        ],
+        "summary": "Summary",
+        "description": "Approved aggregate findings from the notebook. No profile, essay or row level record.",
+        "operationId": "summary_api_v1_lab_summary_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabSummary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/lab/figures/{name}": {
+      "get": {
+        "tags": [
+          "lab"
+        ],
+        "summary": "Figure",
+        "description": "One of the notebook's own figures, for charts whose numbers exist only as pictures.",
+        "operationId": "figure_api_v1_lab_figures__name__get",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z_]{1,40}$",
+              "title": "Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/classify/examples": {
+      "get": {
+        "tags": [
+          "classify"
+        ],
+        "summary": "Examples",
+        "description": "The six fictional examples. Nothing else can be classified.",
+        "operationId": "examples_api_v1_classify_examples_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClassifyExamplesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/classify/predict": {
+      "post": {
+        "tags": [
+          "classify"
+        ],
+        "summary": "Predict",
+        "description": "Class probabilities for one fictional example. The request holds an example name and no other input.",
+        "operationId": "predict_api_v1_classify_predict_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PredictRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PredictResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Answers": {
+        "properties": {
+          "smokes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "no",
+                  "sometimes",
+                  "when drinking",
+                  "yes",
+                  "trying to quit"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Smokes"
+          },
+          "drugs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "never",
+                  "sometimes",
+                  "often"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Drugs"
+          },
+          "diet_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "anything",
+                  "vegetarian",
+                  "vegan",
+                  "other",
+                  "halal",
+                  "kosher"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diet Type"
+          },
+          "education_level": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "college",
+                  "masters",
+                  "two year college",
+                  "high school",
+                  "phd",
+                  "law school",
+                  "med school"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Education Level"
+          },
+          "job": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "other",
+                  "science / tech / engineering",
+                  "computer / hardware / software",
+                  "artistic / musical / writer",
+                  "sales / marketing / biz dev",
+                  "education / academia",
+                  "student",
+                  "medicine / health",
+                  "banking / financial / real estate",
+                  "executive / management",
+                  "entertainment / media",
+                  "law / legal services",
+                  "hospitality / travel",
+                  "construction / craftsmanship",
+                  "clerical / administrative",
+                  "political / government",
+                  "transportation",
+                  "unemployed",
+                  "retired",
+                  "military"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job"
+          },
+          "offspring": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "doesn't have kids",
+                  "doesn't have kids, but might want them",
+                  "doesn't have kids, but wants them",
+                  "doesn't want kids",
+                  "has a kid",
+                  "has kids",
+                  "has kids, and wants more"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Offspring"
+          },
+          "pets": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "likes dogs and cats",
+                  "likes dogs",
+                  "likes cats",
+                  "has a dog",
+                  "has a cat",
+                  "has both",
+                  "prefers neither"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pets"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "single",
+                  "seeing someone",
+                  "available",
+                  "married"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "body_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "average",
+                  "fit",
+                  "athletic",
+                  "thin",
+                  "curvy",
+                  "a little extra"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Body Type"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Answers"
+      },
+      "AssignmentCheck": {
+        "properties": {
+          "agreement_pct": {
+            "type": "number",
+            "title": "Agreement Pct"
+          },
+          "users_checked": {
+            "type": "integer",
+            "title": "Users Checked"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "agreement_pct",
+          "users_checked"
+        ],
+        "title": "AssignmentCheck"
+      },
+      "Association": {
+        "properties": {
+          "factor": {
+            "type": "string",
+            "title": "Factor"
+          },
+          "measure": {
+            "type": "string",
+            "title": "Measure"
+          },
+          "effect": {
+            "type": "number",
+            "title": "Effect"
+          },
+          "low": {
+            "type": "number",
+            "title": "Low"
+          },
+          "high": {
+            "type": "number",
+            "title": "High"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "factor",
+          "measure",
+          "effect",
+          "low",
+          "high"
+        ],
+        "title": "Association"
+      },
+      "AverageSimilarity": {
+        "properties": {
+          "tfidf": {
+            "type": "number",
+            "title": "Tfidf"
+          },
+          "embeddings": {
+            "type": "number",
+            "title": "Embeddings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "tfidf",
+          "embeddings"
+        ],
+        "title": "AverageSimilarity"
+      },
+      "ClassProbability": {
+        "properties": {
+          "level": {
+            "type": "string",
+            "enum": [
+              "not at all",
+              "rarely",
+              "socially",
+              "often+"
+            ],
+            "title": "Level"
+          },
+          "probability": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Probability"
+          },
+          "base_rate": {
+            "type": "number",
+            "title": "Base Rate",
+            "description": "Share of training users at this level, in percent."
+          },
+          "is_predicted": {
+            "type": "boolean",
+            "title": "Is Predicted"
+          }
+        },
+        "type": "object",
+        "required": [
+          "level",
+          "probability",
+          "base_rate",
+          "is_predicted"
+        ],
+        "title": "ClassProbability"
+      },
+      "ClassScores": {
+        "properties": {
+          "level": {
+            "type": "string",
+            "title": "Level"
+          },
+          "precision": {
+            "type": "number",
+            "title": "Precision"
+          },
+          "recall": {
+            "type": "number",
+            "title": "Recall"
+          },
+          "f1": {
+            "type": "number",
+            "title": "F1"
+          },
+          "support": {
+            "type": "integer",
+            "title": "Support"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "level",
+          "precision",
+          "recall",
+          "f1",
+          "support"
+        ],
+        "title": "ClassScores"
+      },
+      "ClassifyExample": {
+        "properties": {
+          "example_id": {
+            "type": "string",
+            "title": "Example Id"
+          },
+          "display_handle": {
+            "type": "string",
+            "title": "Display Handle"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "lifestyle": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Lifestyle"
+          },
+          "persona": {
+            "$ref": "#/components/schemas/Persona"
+          }
+        },
+        "type": "object",
+        "required": [
+          "example_id",
+          "display_handle",
+          "text",
+          "lifestyle",
+          "persona"
+        ],
+        "title": "ClassifyExample"
+      },
+      "ClassifyExamplesResponse": {
+        "properties": {
+          "examples": {
+            "items": {
+              "$ref": "#/components/schemas/ClassifyExample"
+            },
+            "type": "array",
+            "title": "Examples"
+          },
+          "notice": {
+            "type": "string",
+            "title": "Notice",
+            "default": "Educational and experimental. The inputs are fictional. A probability is a model estimate from patterns in 2011 and 2012 profiles, never a fact about a person."
+          }
+        },
+        "type": "object",
+        "required": [
+          "examples"
+        ],
+        "title": "ClassifyExamplesResponse"
+      },
+      "Comparison": {
+        "properties": {
+          "overlap_count": {
+            "type": "integer",
+            "title": "Overlap Count"
+          },
+          "in_both": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "In Both"
+          },
+          "only_embeddings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Only Embeddings"
+          },
+          "only_tfidf": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Only Tfidf"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "overlap_count",
+          "in_both",
+          "only_embeddings",
+          "only_tfidf",
+          "note"
+        ],
+        "title": "Comparison"
+      },
+      "ConfusionPct": {
+        "properties": {
+          "labels": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Labels"
+          },
+          "rows": {
+            "items": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Rows"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "labels",
+          "rows",
+          "source"
+        ],
+        "title": "ConfusionPct"
+      },
+      "Cost": {
+        "properties": {
+          "columns": {
+            "type": "integer",
+            "title": "Columns"
+          },
+          "memory_mb": {
+            "type": "integer",
+            "title": "Memory Mb"
+          },
+          "seconds": {
+            "type": "integer",
+            "title": "Seconds"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "columns",
+          "memory_mb",
+          "seconds"
+        ],
+        "title": "Cost"
+      },
+      "Dataset": {
+        "properties": {
+          "profiles": {
+            "type": "integer",
+            "title": "Profiles"
+          },
+          "columns": {
+            "type": "integer",
+            "title": "Columns"
+          },
+          "labelled": {
+            "type": "integer",
+            "title": "Labelled"
+          },
+          "unlabelled": {
+            "type": "integer",
+            "title": "Unlabelled"
+          },
+          "train": {
+            "type": "integer",
+            "title": "Train"
+          },
+          "test": {
+            "type": "integer",
+            "title": "Test"
+          },
+          "segmented": {
+            "type": "integer",
+            "title": "Segmented"
+          },
+          "no_text": {
+            "type": "integer",
+            "title": "No Text"
+          },
+          "california": {
+            "type": "integer",
+            "title": "California"
+          },
+          "essay_answers_min": {
+            "type": "integer",
+            "title": "Essay Answers Min"
+          },
+          "essay_answers_max": {
+            "type": "integer",
+            "title": "Essay Answers Max"
+          },
+          "income_not_given_pct": {
+            "type": "number",
+            "title": "Income Not Given Pct"
+          },
+          "period": {
+            "type": "string",
+            "title": "Period"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "profiles",
+          "columns",
+          "labelled",
+          "unlabelled",
+          "train",
+          "test",
+          "segmented",
+          "no_text",
+          "california",
+          "essay_answers_min",
+          "essay_answers_max",
+          "income_not_given_pct",
+          "period"
+        ],
+        "title": "Dataset"
+      },
+      "DrinkingCheck": {
+        "properties": {
+          "highest_segment": {
+            "type": "integer",
+            "title": "Highest Segment"
+          },
+          "highest_often_pct": {
+            "type": "integer",
+            "title": "Highest Often Pct"
+          },
+          "lowest_segment": {
+            "type": "integer",
+            "title": "Lowest Segment"
+          },
+          "lowest_often_pct": {
+            "type": "integer",
+            "title": "Lowest Often Pct"
+          },
+          "lowest_rarely_or_never_pct": {
+            "type": "integer",
+            "title": "Lowest Rarely Or Never Pct"
+          },
+          "others_often_low_pct": {
+            "type": "integer",
+            "title": "Others Often Low Pct"
+          },
+          "others_often_high_pct": {
+            "type": "integer",
+            "title": "Others Often High Pct"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "highest_segment",
+          "highest_often_pct",
+          "lowest_segment",
+          "lowest_often_pct",
+          "lowest_rarely_or_never_pct",
+          "others_often_low_pct",
+          "others_often_high_pct"
+        ],
+        "title": "DrinkingCheck"
+      },
+      "DrinkingWords": {
+        "properties": {
+          "users_mentioning_pct": {
+            "type": "number",
+            "title": "Users Mentioning Pct"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "users_mentioning_pct"
+        ],
+        "title": "DrinkingWords"
+      },
+      "DrugContrast": {
+        "properties": {
+          "often_group_pct": {
+            "type": "number",
+            "title": "Often Group Pct"
+          },
+          "often_group_n": {
+            "type": "integer",
+            "title": "Often Group N"
+          },
+          "never_group_pct": {
+            "type": "number",
+            "title": "Never Group Pct"
+          },
+          "never_group_n": {
+            "type": "integer",
+            "title": "Never Group N"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "often_group_pct",
+          "often_group_n",
+          "never_group_pct",
+          "never_group_n"
+        ],
+        "title": "DrugContrast"
+      },
+      "ExamplesResponse": {
+        "properties": {
+          "examples": {
+            "items": {
+              "$ref": "#/components/schemas/ProfileDetail"
+            },
+            "type": "array",
+            "title": "Examples"
+          }
+        },
+        "type": "object",
+        "required": [
+          "examples"
+        ],
+        "title": "ExamplesResponse"
+      },
+      "Fairness": {
+        "properties": {
+          "subgroups": {
+            "items": {
+              "$ref": "#/components/schemas/Subgroup"
+            },
+            "type": "array",
+            "title": "Subgroups"
+          },
+          "privacy": {
+            "$ref": "#/components/schemas/Privacy"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "subgroups",
+          "privacy"
+        ],
+        "title": "Fairness"
+      },
+      "Features": {
+        "properties": {
+          "discovery": {
+            "type": "boolean",
+            "title": "Discovery"
+          },
+          "lab_summary": {
+            "type": "boolean",
+            "title": "Lab Summary"
+          },
+          "classifier_demo": {
+            "type": "boolean",
+            "title": "Classifier Demo"
+          },
+          "segment_assignment": {
+            "type": "boolean",
+            "title": "Segment Assignment"
+          }
+        },
+        "type": "object",
+        "required": [
+          "discovery",
+          "lab_summary",
+          "classifier_demo",
+          "segment_assignment"
+        ],
+        "title": "Features",
+        "description": "Which capabilities exist right now. Each is on only when its files are loaded."
+      },
+      "FieldAgreement": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "chance": {
+            "type": "number",
+            "title": "Chance"
+          },
+          "tfidf": {
+            "type": "number",
+            "title": "Tfidf"
+          },
+          "embeddings": {
+            "type": "number",
+            "title": "Embeddings"
+          },
+          "tfidf_lift": {
+            "type": "number",
+            "title": "Tfidf Lift"
+          },
+          "embeddings_lift": {
+            "type": "number",
+            "title": "Embeddings Lift"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "field",
+          "chance",
+          "tfidf",
+          "embeddings",
+          "tfidf_lift",
+          "embeddings_lift"
+        ],
+        "title": "FieldAgreement"
+      },
+      "FinalScores": {
+        "properties": {
+          "macro_f1": {
+            "type": "number",
+            "title": "Macro F1"
+          },
+          "accuracy": {
+            "type": "number",
+            "title": "Accuracy"
+          },
+          "validation_macro_f1": {
+            "type": "number",
+            "title": "Validation Macro F1"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "macro_f1",
+          "accuracy",
+          "validation_macro_f1"
+        ],
+        "title": "FinalScores"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ok",
+            "title": "Status"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "public",
+              "local"
+            ],
+            "title": "Mode"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "mode",
+          "version"
+        ],
+        "title": "HealthResponse"
+      },
+      "InputSummary": {
+        "properties": {
+          "characters_received": {
+            "type": "integer",
+            "title": "Characters Received"
+          },
+          "words_used": {
+            "type": "integer",
+            "title": "Words Used"
+          },
+          "personal_details_removed": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Personal Details Removed",
+            "description": "Counts by kind. The details themselves are never kept."
+          },
+          "themes_detected": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Themes Detected"
+          }
+        },
+        "type": "object",
+        "required": [
+          "characters_received",
+          "words_used",
+          "personal_details_removed",
+          "themes_detected"
+        ],
+        "title": "InputSummary"
+      },
+      "Interval": {
+        "properties": {
+          "metric": {
+            "type": "string",
+            "title": "Metric"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "low": {
+            "type": "number",
+            "title": "Low"
+          },
+          "high": {
+            "type": "number",
+            "title": "High"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "metric",
+          "score",
+          "low",
+          "high"
+        ],
+        "title": "Interval"
+      },
+      "InventedDemo": {
+        "properties": {
+          "same_meaning": {
+            "$ref": "#/components/schemas/Pair"
+          },
+          "different": {
+            "$ref": "#/components/schemas/Pair"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "same_meaning",
+          "different"
+        ],
+        "title": "InventedDemo"
+      },
+      "LabSummary": {
+        "properties": {
+          "schema_version": {
+            "type": "integer",
+            "title": "Schema Version"
+          },
+          "provenance": {
+            "$ref": "#/components/schemas/Provenance"
+          },
+          "overview": {
+            "$ref": "#/components/schemas/Overview"
+          },
+          "segments": {
+            "$ref": "#/components/schemas/Segments"
+          },
+          "models": {
+            "$ref": "#/components/schemas/Models"
+          },
+          "similarity": {
+            "$ref": "#/components/schemas/Similarity"
+          },
+          "fairness": {
+            "$ref": "#/components/schemas/Fairness"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "schema_version",
+          "provenance",
+          "overview",
+          "segments",
+          "models",
+          "similarity",
+          "fairness"
+        ],
+        "title": "LabSummary"
+      },
+      "Level": {
+        "properties": {
+          "level": {
+            "type": "string",
+            "title": "Level"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "share_pct": {
+            "type": "number",
+            "title": "Share Pct"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "level",
+          "count",
+          "share_pct"
+        ],
+        "title": "Level"
+      },
+      "LifestyleRatio": {
+        "properties": {
+          "answer": {
+            "type": "string",
+            "title": "Answer"
+          },
+          "ratio": {
+            "type": "number",
+            "title": "Ratio"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "answer",
+          "ratio"
+        ],
+        "title": "LifestyleRatio"
+      },
+      "Limits": {
+        "properties": {
+          "max_text_chars": {
+            "type": "integer",
+            "title": "Max Text Chars"
+          },
+          "min_words": {
+            "type": "integer",
+            "title": "Min Words"
+          },
+          "min_neighbours": {
+            "type": "integer",
+            "title": "Min Neighbours"
+          },
+          "max_neighbours": {
+            "type": "integer",
+            "title": "Max Neighbours"
+          }
+        },
+        "type": "object",
+        "required": [
+          "max_text_chars",
+          "min_words",
+          "min_neighbours",
+          "max_neighbours"
+        ],
+        "title": "Limits"
+      },
+      "MetaResponse": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "public",
+              "local"
+            ],
+            "title": "Mode"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "features": {
+            "$ref": "#/components/schemas/Features"
+          },
+          "pool": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PoolInfo"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "answer_options": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "title": "Answer Options"
+          },
+          "answer_shares": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "additionalProperties": {
+                    "type": "number"
+                  },
+                  "type": "object"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answer Shares"
+          },
+          "local_only_features": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Local Only Features"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/Limits"
+          },
+          "notice": {
+            "type": "string",
+            "title": "Notice"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mode",
+          "version",
+          "features",
+          "answer_options",
+          "local_only_features",
+          "limits",
+          "notice"
+        ],
+        "title": "MetaResponse"
+      },
+      "MethodResult": {
+        "properties": {
+          "method": {
+            "type": "string",
+            "enum": [
+              "embeddings",
+              "tfidf"
+            ],
+            "title": "Method"
+          },
+          "score_name": {
+            "type": "string",
+            "title": "Score Name"
+          },
+          "neighbours": {
+            "items": {
+              "$ref": "#/components/schemas/Neighbour"
+            },
+            "type": "array",
+            "title": "Neighbours"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "method",
+          "score_name",
+          "neighbours"
+        ],
+        "title": "MethodResult"
+      },
+      "MissingField": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "missing_pct": {
+            "type": "number",
+            "title": "Missing Pct"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "field",
+          "missing_pct"
+        ],
+        "title": "MissingField"
+      },
+      "Models": {
+        "properties": {
+          "validation": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationRow"
+            },
+            "type": "array",
+            "title": "Validation"
+          },
+          "tuning": {
+            "items": {
+              "$ref": "#/components/schemas/TuningRow"
+            },
+            "type": "array",
+            "title": "Tuning"
+          },
+          "tuning_best_c": {
+            "type": "number",
+            "title": "Tuning Best C"
+          },
+          "segment_effect": {
+            "$ref": "#/components/schemas/SegmentEffect"
+          },
+          "drinking_words": {
+            "$ref": "#/components/schemas/DrinkingWords"
+          },
+          "test": {
+            "$ref": "#/components/schemas/TestResult"
+          },
+          "confusion_pct": {
+            "$ref": "#/components/schemas/ConfusionPct"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "validation",
+          "tuning",
+          "tuning_best_c",
+          "segment_effect",
+          "drinking_words",
+          "test",
+          "confusion_pct"
+        ],
+        "title": "Models"
+      },
+      "Neighbour": {
+        "properties": {
+          "rank": {
+            "type": "integer",
+            "title": "Rank"
+          },
+          "profile_id": {
+            "type": "string",
+            "title": "Profile Id"
+          },
+          "display_handle": {
+            "type": "string",
+            "title": "Display Handle"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score",
+            "description": "Cosine similarity for this method only. Do not compare across methods."
+          },
+          "lifestyle": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Lifestyle"
+          },
+          "shared_answers": {
+            "items": {
+              "$ref": "#/components/schemas/SharedAnswer"
+            },
+            "type": "array",
+            "title": "Shared Answers"
+          },
+          "shared_terms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Shared Terms"
+          },
+          "themes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Themes"
+          },
+          "shared_themes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Shared Themes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rank",
+          "profile_id",
+          "display_handle",
+          "score",
+          "lifestyle",
+          "shared_answers",
+          "shared_terms",
+          "themes",
+          "shared_themes"
+        ],
+        "title": "Neighbour"
+      },
+      "Overview": {
+        "properties": {
+          "dataset": {
+            "$ref": "#/components/schemas/Dataset"
+          },
+          "target": {
+            "$ref": "#/components/schemas/Target"
+          },
+          "baseline_train": {
+            "$ref": "#/components/schemas/Scores"
+          },
+          "missing": {
+            "items": {
+              "$ref": "#/components/schemas/MissingField"
+            },
+            "type": "array",
+            "title": "Missing"
+          },
+          "associations": {
+            "items": {
+              "$ref": "#/components/schemas/Association"
+            },
+            "type": "array",
+            "title": "Associations"
+          },
+          "drug_contrast": {
+            "$ref": "#/components/schemas/DrugContrast"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dataset",
+          "target",
+          "baseline_train",
+          "missing",
+          "associations",
+          "drug_contrast"
+        ],
+        "title": "Overview"
+      },
+      "Pair": {
+        "properties": {
+          "tfidf": {
+            "type": "number",
+            "title": "Tfidf"
+          },
+          "embeddings": {
+            "type": "number",
+            "title": "Embeddings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "tfidf",
+          "embeddings"
+        ],
+        "title": "Pair"
+      },
+      "Persona": {
+        "properties": {
+          "age": {
+            "type": "integer",
+            "title": "Age"
+          },
+          "height": {
+            "type": "integer",
+            "title": "Height",
+            "description": "Inches."
+          },
+          "languages_count": {
+            "type": "integer",
+            "title": "Languages Count"
+          },
+          "education_status": {
+            "type": "string",
+            "title": "Education Status"
+          },
+          "income_answered": {
+            "type": "integer",
+            "title": "Income Answered"
+          },
+          "sex": {
+            "type": "string",
+            "title": "Sex",
+            "description": "Used by the original model. Fixed for each fictional example."
+          },
+          "location": {
+            "type": "string",
+            "title": "Location",
+            "description": "Used by the original model. Fixed for each fictional example."
+          }
+        },
+        "type": "object",
+        "required": [
+          "age",
+          "height",
+          "languages_count",
+          "education_status",
+          "income_answered",
+          "sex",
+          "location"
+        ],
+        "title": "Persona",
+        "description": "The fixed fictional fields that complete the model's inputs. None of them can be edited."
+      },
+      "PoolInfo": {
+        "properties": {
+          "size": {
+            "type": "integer",
+            "title": "Size"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "synthetic": {
+            "type": "boolean",
+            "const": true,
+            "title": "Synthetic",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "size",
+          "version"
+        ],
+        "title": "PoolInfo"
+      },
+      "Population": {
+        "properties": {
+          "mean_age": {
+            "type": "number",
+            "title": "Mean Age"
+          },
+          "male_pct": {
+            "type": "number",
+            "title": "Male Pct"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "mean_age",
+          "male_pct"
+        ],
+        "title": "Population"
+      },
+      "PredictRequest": {
+        "properties": {
+          "example_id": {
+            "type": "string",
+            "pattern": "^ex_[0-9a-f]{8}$",
+            "title": "Example Id",
+            "description": "One of the fictional examples."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "example_id"
+        ],
+        "title": "PredictRequest"
+      },
+      "PredictResponse": {
+        "properties": {
+          "example_id": {
+            "type": "string",
+            "title": "Example Id"
+          },
+          "display_handle": {
+            "type": "string",
+            "title": "Display Handle"
+          },
+          "classes": {
+            "items": {
+              "$ref": "#/components/schemas/ClassProbability"
+            },
+            "type": "array",
+            "title": "Classes"
+          },
+          "predicted": {
+            "type": "string",
+            "enum": [
+              "not at all",
+              "rarely",
+              "socially",
+              "often+"
+            ],
+            "title": "Predicted"
+          },
+          "top_probability": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Top Probability"
+          },
+          "margin": {
+            "type": "number",
+            "title": "Margin",
+            "description": "Top probability minus the second highest."
+          },
+          "notice": {
+            "type": "string",
+            "title": "Notice",
+            "default": "Educational and experimental. The inputs are fictional. A probability is a model estimate from patterns in 2011 and 2012 profiles, never a fact about a person."
+          }
+        },
+        "type": "object",
+        "required": [
+          "example_id",
+          "display_handle",
+          "classes",
+          "predicted",
+          "top_probability",
+          "margin"
+        ],
+        "title": "PredictResponse"
+      },
+      "Privacy": {
+        "properties": {
+          "essays_with_web_link": {
+            "type": "integer",
+            "title": "Essays With Web Link"
+          },
+          "essays_with_handle": {
+            "type": "integer",
+            "title": "Essays With Handle"
+          },
+          "essays_with_email": {
+            "type": "integer",
+            "title": "Essays With Email"
+          },
+          "essays_with_phone": {
+            "type": "integer",
+            "title": "Essays With Phone"
+          },
+          "unique_on_six_fields": {
+            "$ref": "#/components/schemas/UniqueShare"
+          },
+          "unique_on_four_fields": {
+            "$ref": "#/components/schemas/UniqueShare"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "essays_with_web_link",
+          "essays_with_handle",
+          "essays_with_email",
+          "essays_with_phone",
+          "unique_on_six_fields",
+          "unique_on_four_fields"
+        ],
+        "title": "Privacy"
+      },
+      "ProfileDetail": {
+        "properties": {
+          "profile_id": {
+            "type": "string",
+            "title": "Profile Id"
+          },
+          "display_handle": {
+            "type": "string",
+            "title": "Display Handle"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "themes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Themes"
+          },
+          "lifestyle": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Lifestyle"
+          },
+          "is_synthetic": {
+            "type": "boolean",
+            "const": true,
+            "title": "Is Synthetic",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "profile_id",
+          "display_handle",
+          "text",
+          "themes",
+          "lifestyle"
+        ],
+        "title": "ProfileDetail"
+      },
+      "Provenance": {
+        "properties": {
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "notebook_sha256": {
+            "type": "string",
+            "title": "Notebook Sha256"
+          },
+          "contents": {
+            "type": "string",
+            "title": "Contents"
+          },
+          "figures": {
+            "additionalProperties": {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              },
+              "type": "object"
+            },
+            "type": "object",
+            "title": "Figures"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "source",
+          "notebook_sha256",
+          "contents",
+          "figures"
+        ],
+        "title": "Provenance"
+      },
+      "Reduction": {
+        "properties": {
+          "text_components": {
+            "type": "integer",
+            "title": "Text Components"
+          },
+          "text_variation_pct": {
+            "type": "integer",
+            "title": "Text Variation Pct"
+          },
+          "lifestyle_components": {
+            "type": "integer",
+            "title": "Lifestyle Components"
+          },
+          "lifestyle_variation_pct": {
+            "type": "integer",
+            "title": "Lifestyle Variation Pct"
+          },
+          "text_columns": {
+            "type": "integer",
+            "title": "Text Columns"
+          },
+          "lifestyle_columns": {
+            "type": "integer",
+            "title": "Lifestyle Columns"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "text_components",
+          "text_variation_pct",
+          "lifestyle_components",
+          "lifestyle_variation_pct",
+          "text_columns",
+          "lifestyle_columns"
+        ],
+        "title": "Reduction"
+      },
+      "Scores": {
+        "properties": {
+          "accuracy": {
+            "type": "number",
+            "title": "Accuracy"
+          },
+          "macro_f1": {
+            "type": "number",
+            "title": "Macro F1"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "accuracy",
+          "macro_f1"
+        ],
+        "title": "Scores"
+      },
+      "Segment": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "users": {
+            "type": "integer",
+            "title": "Users"
+          },
+          "share_pct": {
+            "type": "number",
+            "title": "Share Pct"
+          },
+          "mean_age": {
+            "type": "number",
+            "title": "Mean Age"
+          },
+          "male_pct": {
+            "type": "number",
+            "title": "Male Pct"
+          },
+          "top_words": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Top Words"
+          },
+          "over_represented": {
+            "items": {
+              "$ref": "#/components/schemas/LifestyleRatio"
+            },
+            "type": "array",
+            "title": "Over Represented"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "users",
+          "share_pct",
+          "mean_age",
+          "male_pct",
+          "top_words",
+          "over_represented"
+        ],
+        "title": "Segment"
+      },
+      "SegmentEffect": {
+        "properties": {
+          "fold_changes": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Fold Changes"
+          },
+          "mean_change": {
+            "type": "number",
+            "title": "Mean Change"
+          },
+          "fold_spread": {
+            "type": "number",
+            "title": "Fold Spread"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "fold_changes",
+          "mean_change",
+          "fold_spread"
+        ],
+        "title": "SegmentEffect"
+      },
+      "Segments": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Segment"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "population": {
+            "$ref": "#/components/schemas/Population"
+          },
+          "stability": {
+            "items": {
+              "$ref": "#/components/schemas/StabilityRow"
+            },
+            "type": "array",
+            "title": "Stability"
+          },
+          "stability_k6": {
+            "$ref": "#/components/schemas/StabilityPair"
+          },
+          "silhouette": {
+            "$ref": "#/components/schemas/Silhouette"
+          },
+          "reduction": {
+            "$ref": "#/components/schemas/Reduction"
+          },
+          "drinking_check": {
+            "$ref": "#/components/schemas/DrinkingCheck"
+          },
+          "assignment_check": {
+            "$ref": "#/components/schemas/AssignmentCheck"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "items",
+          "population",
+          "stability",
+          "stability_k6",
+          "silhouette",
+          "reduction",
+          "drinking_check",
+          "assignment_check"
+        ],
+        "title": "Segments"
+      },
+      "SharedAnswer": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "share_of_pool": {
+            "type": "number",
+            "title": "Share Of Pool",
+            "description": "Share of pool profiles that gave this answer, among those who answered."
+          }
+        },
+        "type": "object",
+        "required": [
+          "field",
+          "value",
+          "share_of_pool"
+        ],
+        "title": "SharedAnswer"
+      },
+      "Silhouette": {
+        "properties": {
+          "k2": {
+            "type": "number",
+            "title": "K2"
+          },
+          "k6_about": {
+            "type": "number",
+            "title": "K6 About"
+          },
+          "k10": {
+            "type": "number",
+            "title": "K10"
+          },
+          "maximum": {
+            "type": "number",
+            "title": "Maximum"
+          },
+          "weak_below": {
+            "type": "number",
+            "title": "Weak Below"
+          },
+          "clear_above": {
+            "type": "number",
+            "title": "Clear Above"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "k2",
+          "k6_about",
+          "k10",
+          "maximum",
+          "weak_below",
+          "clear_above"
+        ],
+        "title": "Silhouette"
+      },
+      "SimilarRequest": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Text",
+            "description": "A fictional profile description."
+          },
+          "answers": {
+            "$ref": "#/components/schemas/Answers",
+            "description": "Optional. Used only to explain results, never to rank them."
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "embeddings",
+              "tfidf",
+              "both"
+            ],
+            "title": "Method",
+            "default": "both"
+          },
+          "k": {
+            "type": "integer",
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "K",
+            "default": 5
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "SimilarRequest"
+      },
+      "SimilarResponse": {
+        "properties": {
+          "pool": {
+            "$ref": "#/components/schemas/PoolInfo"
+          },
+          "input": {
+            "$ref": "#/components/schemas/InputSummary"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/MethodResult"
+            },
+            "type": "array",
+            "title": "Results"
+          },
+          "comparison": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Comparison"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "notice": {
+            "type": "string",
+            "title": "Notice"
+          }
+        },
+        "type": "object",
+        "required": [
+          "pool",
+          "input",
+          "results",
+          "notice"
+        ],
+        "title": "SimilarResponse"
+      },
+      "Similarity": {
+        "properties": {
+          "searchable_users": {
+            "type": "integer",
+            "title": "Searchable Users"
+          },
+          "tfidf_columns": {
+            "type": "integer",
+            "title": "Tfidf Columns"
+          },
+          "embedding_columns": {
+            "type": "integer",
+            "title": "Embedding Columns"
+          },
+          "queries": {
+            "type": "integer",
+            "title": "Queries"
+          },
+          "neighbours": {
+            "type": "integer",
+            "title": "Neighbours"
+          },
+          "average_similarity": {
+            "$ref": "#/components/schemas/AverageSimilarity"
+          },
+          "fields": {
+            "items": {
+              "$ref": "#/components/schemas/FieldAgreement"
+            },
+            "type": "array",
+            "title": "Fields"
+          },
+          "invented_profile_demo": {
+            "$ref": "#/components/schemas/InventedDemo"
+          },
+          "representation_cost": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Cost"
+            },
+            "type": "object",
+            "title": "Representation Cost"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "searchable_users",
+          "tfidf_columns",
+          "embedding_columns",
+          "queries",
+          "neighbours",
+          "average_similarity",
+          "fields",
+          "invented_profile_demo",
+          "representation_cost"
+        ],
+        "title": "Similarity"
+      },
+      "StabilityPair": {
+        "properties": {
+          "new_seed": {
+            "type": "number",
+            "title": "New Seed"
+          },
+          "new_sample": {
+            "type": "number",
+            "title": "New Sample"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "new_seed",
+          "new_sample"
+        ],
+        "title": "StabilityPair"
+      },
+      "StabilityRow": {
+        "properties": {
+          "k": {
+            "type": "integer",
+            "title": "K"
+          },
+          "new_seed": {
+            "type": "number",
+            "title": "New Seed"
+          },
+          "new_sample": {
+            "type": "number",
+            "title": "New Sample"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "k",
+          "new_seed",
+          "new_sample"
+        ],
+        "title": "StabilityRow"
+      },
+      "Subgroup": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "group": {
+            "type": "string",
+            "title": "Group"
+          },
+          "users": {
+            "type": "integer",
+            "title": "Users"
+          },
+          "often_share": {
+            "type": "number",
+            "title": "Often Share"
+          },
+          "macro_f1": {
+            "type": "number",
+            "title": "Macro F1"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "group",
+          "users",
+          "often_share",
+          "macro_f1"
+        ],
+        "title": "Subgroup"
+      },
+      "Target": {
+        "properties": {
+          "levels": {
+            "items": {
+              "$ref": "#/components/schemas/Level"
+            },
+            "type": "array",
+            "title": "Levels"
+          },
+          "largest_to_smallest": {
+            "type": "number",
+            "title": "Largest To Smallest"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "levels",
+          "largest_to_smallest"
+        ],
+        "title": "Target"
+      },
+      "TestResult": {
+        "properties": {
+          "users": {
+            "type": "integer",
+            "title": "Users"
+          },
+          "c": {
+            "type": "number",
+            "title": "C"
+          },
+          "baseline": {
+            "$ref": "#/components/schemas/Scores"
+          },
+          "final": {
+            "$ref": "#/components/schemas/FinalScores"
+          },
+          "per_class": {
+            "items": {
+              "$ref": "#/components/schemas/ClassScores"
+            },
+            "type": "array",
+            "title": "Per Class"
+          },
+          "macro_precision": {
+            "type": "number",
+            "title": "Macro Precision"
+          },
+          "macro_recall": {
+            "type": "number",
+            "title": "Macro Recall"
+          },
+          "intervals": {
+            "items": {
+              "$ref": "#/components/schemas/Interval"
+            },
+            "type": "array",
+            "title": "Intervals"
+          },
+          "often_predicted_socially_pct": {
+            "type": "integer",
+            "title": "Often Predicted Socially Pct"
+          },
+          "not_at_all_predicted_rarely_pct": {
+            "type": "integer",
+            "title": "Not At All Predicted Rarely Pct"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "users",
+          "c",
+          "baseline",
+          "final",
+          "per_class",
+          "macro_precision",
+          "macro_recall",
+          "intervals",
+          "often_predicted_socially_pct",
+          "not_at_all_predicted_rarely_pct"
+        ],
+        "title": "TestResult"
+      },
+      "TuningRow": {
+        "properties": {
+          "c": {
+            "type": "number",
+            "title": "C"
+          },
+          "validation_macro_f1": {
+            "type": "number",
+            "title": "Validation Macro F1"
+          },
+          "fold_spread": {
+            "type": "number",
+            "title": "Fold Spread"
+          },
+          "training_macro_f1": {
+            "type": "number",
+            "title": "Training Macro F1"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "c",
+          "validation_macro_f1",
+          "fold_spread",
+          "training_macro_f1"
+        ],
+        "title": "TuningRow"
+      },
+      "UniqueShare": {
+        "properties": {
+          "unique": {
+            "type": "integer",
+            "title": "Unique"
+          },
+          "of": {
+            "type": "integer",
+            "title": "Of"
+          },
+          "pct": {
+            "type": "number",
+            "title": "Pct"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "unique",
+          "of",
+          "pct"
+        ],
+        "title": "UniqueShare"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "ValidationRow": {
+        "properties": {
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "inputs": {
+            "type": "string",
+            "title": "Inputs"
+          },
+          "validation_macro_f1": {
+            "type": "number",
+            "title": "Validation Macro F1"
+          },
+          "fold_spread": {
+            "type": "number",
+            "title": "Fold Spread"
+          },
+          "training_macro_f1": {
+            "type": "number",
+            "title": "Training Macro F1"
+          },
+          "validation_accuracy": {
+            "type": "number",
+            "title": "Validation Accuracy"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "model",
+          "inputs",
+          "validation_macro_f1",
+          "fold_spread",
+          "training_macro_f1",
+          "validation_accuracy"
+        ],
+        "title": "ValidationRow"
+      }
+    }
+  }
+}
