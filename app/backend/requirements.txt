@@ -1,0 +1,14 @@
+fastapi==0.163.0
+uvicorn==0.54.0
+pydantic==2.14.3
+pydantic-settings==2.16.3
+# The methods below are the notebook's, at the notebook's versions (a test checks they match ../../requirements.txt).
+numpy==2.5.4
+scipy==1.18.1
+pandas==3.1.1
+scikit-learn==1.9.1
+joblib==1.6.0
+sentence-transformers==6.3.0
+torch==2.15.0
+transformers==5.23.0
+huggingface_hub==2.4.0
