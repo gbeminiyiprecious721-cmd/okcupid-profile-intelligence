@@ -38,6 +38,10 @@ class Settings(BaseSettings):
     rate_limit_enabled: bool = True
     rate_limit_search_per_minute: int = Field(default=30, ge=1)
     rate_limit_general_per_minute: int = Field(default=240, ge=1)
+    # Global safeguard for the CPU: at most this many searches in progress at once, from all visitors together. More
+    # are refused at once with a short retry time instead of queueing. 0 turns it off. See security/ratelimit.py.
+    rate_limit_max_inflight_searches: int = Field(default=4, ge=0, le=100)
+    rate_limit_max_inflight_per_visitor: int = Field(default=2, ge=1, le=100)  # of those, one visitor's share
     request_log: bool = True  # one privacy safe line per request on standard output, see security/request_log.py
     trusted_proxy_hops: int = Field(
         default=1, ge=1, le=5

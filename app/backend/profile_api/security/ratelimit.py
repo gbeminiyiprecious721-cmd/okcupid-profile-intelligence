@@ -14,8 +14,16 @@ Design choices, and their limits:
   front end) needs 2. Only set this when proxies you control are in front, otherwise a visitor could choose their
   own address, and check the real header layout on the platform first (see deploy/security_configuration.md).
 - Nothing about the request body is read or stored. Only the address and a count are kept, in memory.
+- A global safeguard sits on top of the per client limits: at most ``max_inflight_searches`` searches may be in
+  progress at once, whoever sends them, and one visitor may have at most ``max_inflight_per_visitor`` of them. The
+  service has a fraction of a CPU, and a search costs between about a second and a minute of that depending on its
+  length, so a count per minute is the wrong unit. When too many searches are already waiting, a new one is refused
+  at once with a short retry time instead of queueing for a minute. It counts only requests the per client limit
+  already let through, and a request refused for being busy gives its slot back, so nobody loses quota to the
+  safeguard.
 """
 
+import ipaddress
 import json
 import math
 import time
@@ -25,6 +33,7 @@ from collections.abc import Callable
 from starlette.types import ASGIApp, Receive, Scope, Send
 
 WINDOW_SECONDS = 60.0
+BUSY_RETRY_SECONDS = 5
 MAX_KEYS = 10_000
 
 # Requests that run a search or a model. Everything else under /api is a read of fixed data.
@@ -54,15 +63,52 @@ class SlidingWindow:
         retry = 0.0 if allowed or not window else max(0.0, window[0] + WINDOW_SECONDS - now)
         return allowed, remaining, retry
 
+    def give_back(self, client: str, bucket: str) -> None:
+        """Take back the request just recorded by check(), for one that was let through but then not served."""
+        window = self.hits.get((client, bucket))
+        if window:
+            window.pop()
+
+
+def normalise_address(text: str) -> str | None:
+    """A canonical key for one address, or None if the text is not an address.
+
+    An IPv6 visitor normally holds a whole /64, so every address in it counts as one client. Without this, one visitor
+    could pick a new address for every request and never reach the limit. An IPv4 address mapped into IPv6 is counted
+    as the IPv4 address. A port, as in ``203.0.113.5:4711`` or ``[2001:db8::1]:4711``, is dropped.
+    """
+    text = text.strip()
+    if text.startswith("[") and "]" in text:
+        text = text[1 : text.index("]")]
+    elif text.count(":") == 1 and "." in text:
+        text = text.split(":")[0]
+    try:
+        ip = ipaddress.ip_address(text)
+    except ValueError:
+        return None
+    if isinstance(ip, ipaddress.IPv6Address):
+        if ip.ipv4_mapped is not None:
+            return str(ip.ipv4_mapped)
+        return f"{ipaddress.ip_network(f'{ip}/64', strict=False).network_address}/64"
+    return str(ip)
+
 
 def client_address(scope: Scope, trust_proxy: bool, hops: int = 1) -> str:
+    """The key the limiter counts a request under.
+
+    Behind proxies we control, the client is the entry ``hops`` places from the right of X-Forwarded-For: each proxy
+    appends the address it received the request from, so everything to the left of that entry is under the visitor's
+    control and is never read. If the header is missing, has fewer entries than there are proxies, or the chosen entry
+    is not an address, nothing in it is trusted and the socket address is used (one shared bucket: it fails safe).
+    """
     if trust_proxy:
-        for name, value in scope.get("headers", []):
-            if name == b"x-forwarded-for":
-                entries = [e.strip() for e in value.decode("latin-1").split(",") if e.strip()]
-                if len(entries) >= hops:
-                    return entries[-hops][:64]
-                # Fewer entries than proxies: the header is not what we expect, so do not trust any of it.
+        # A request may carry the header on several lines. They are one list, in order, as a proxy would read them.
+        lines = [value.decode("latin-1") for name, value in scope.get("headers", []) if name == b"x-forwarded-for"]
+        entries = [e.strip() for line in lines for e in line.split(",") if e.strip()]
+        if len(entries) >= hops:
+            key = normalise_address(entries[-hops])
+            if key is not None:
+                return key
     client = scope.get("client")
     return client[0] if client else "unknown"
 
@@ -76,6 +122,9 @@ class RateLimitMiddleware:
         general_per_minute: int,
         trust_proxy: bool = False,
         trusted_proxy_hops: int = 1,
+        max_inflight_searches: int = 0,
+        max_inflight_per_visitor: int = 2,
+        busy_retry_seconds: int = BUSY_RETRY_SECONDS,
         clock: Callable[[], float] = time.monotonic,
     ):
         self.app = app
@@ -83,6 +132,11 @@ class RateLimitMiddleware:
         self.general_limit = general_per_minute
         self.trust_proxy = trust_proxy
         self.hops = trusted_proxy_hops
+        self.max_inflight = max_inflight_searches  # 0 turns the global safeguard off
+        self.busy_retry = busy_retry_seconds
+        self.max_per_visitor = max_inflight_per_visitor
+        self.inflight = 0
+        self.inflight_by_visitor: dict[str, int] = {}
         self.window = SlidingWindow(clock)
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
@@ -96,22 +150,47 @@ class RateLimitMiddleware:
         client = client_address(scope, self.trust_proxy, self.hops)
         allowed, remaining, retry = self.window.check(client, bucket, limit)
         headers = {"RateLimit-Limit": str(limit), "RateLimit-Remaining": str(remaining)}
-        if allowed:
-
-            async def send_with_headers(message):
-                if message["type"] == "http.response.start":
-                    existing = [(k, v) for k, v in message.get("headers", [])]
-                    existing += [(k.lower().encode(), v.encode()) for k, v in headers.items()]
-                    message = {**message, "headers": existing}
-                await send(message)
-
-            await self.app(scope, receive, send_with_headers)
+        if not allowed:
+            await self.refuse(
+                send, "rate_limited", "Too many requests. Try again in {} seconds.", max(1, math.ceil(retry)), headers
+            )
             return
+        counted = searching and self.max_inflight > 0
+        if counted:
+            reason = None
+            if self.inflight >= self.max_inflight:
+                reason = "The demo is busy right now. Try again in {} seconds."
+            elif self.inflight_by_visitor.get(client, 0) >= self.max_per_visitor:
+                reason = "Your other searches are still running. Try again in {} seconds."
+            if reason:
+                self.window.give_back(client, bucket)  # nothing wrong was done, so this does not use up their quota
+                headers["RateLimit-Remaining"] = str(remaining + 1)
+                await self.refuse(send, "busy", reason, self.busy_retry, headers)
+                return
 
-        seconds = max(1, math.ceil(retry))
-        body = json.dumps(
-            {"error": {"code": "rate_limited", "message": f"Too many requests. Try again in {seconds} seconds."}}
-        ).encode()
+        async def send_with_headers(message):
+            if message["type"] == "http.response.start":
+                existing = [(k, v) for k, v in message.get("headers", [])]
+                existing += [(k.lower().encode(), v.encode()) for k, v in headers.items()]
+                message = {**message, "headers": existing}
+            await send(message)
+
+        if counted:
+            self.inflight += 1
+            self.inflight_by_visitor[client] = self.inflight_by_visitor.get(client, 0) + 1
+        try:
+            await self.app(scope, receive, send_with_headers)
+        finally:
+            if counted:
+                self.inflight -= 1
+                left = self.inflight_by_visitor[client] - 1
+                if left:
+                    self.inflight_by_visitor[client] = left
+                else:
+                    del self.inflight_by_visitor[client]
+
+    async def refuse(self, send: Send, code: str, message: str, seconds: int, headers: dict[str, str]) -> None:
+        body = json.dumps({"error": {"code": code, "message": message.format(seconds)}}).encode()
         await send(
             {
                 "type": "http.response.start",

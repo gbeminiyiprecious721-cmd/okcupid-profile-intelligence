@@ -8,6 +8,8 @@ search behave. Exit code 0 means every check passed. Use it after every deployme
 """
 
 import argparse
+import gzip
+import http.client
 import json
 import sys
 import urllib.error
@@ -32,6 +34,12 @@ def main() -> int:
         help="extra request header, for example 'Authorization: Bearer ...' for a private host",
     )
     parser.add_argument("--no-proxy", action="store_true", help="ignore proxy settings (for localhost)")
+    parser.add_argument(
+        "--check-rate-limit-identity",
+        action="store_true",
+        help="also check that this client is counted in one bucket, whatever connection or forwarded header it uses "
+        "(uses 10 of the general requests per minute)",
+    )
     args = parser.parse_args()
     base = args.base_url.rstrip("/")
     extra = dict(h.split(": ", 1) for h in args.header)  # never printed
@@ -43,13 +51,20 @@ def main() -> int:
             base + path,
             data=body,
             method=method,
-            headers={"Content-Type": "application/json", "Accept": "*/*", **extra},
+            headers={"Content-Type": "application/json", "Accept": "*/*", "Accept-Encoding": "gzip", **extra},
         )  # noqa: S310
         try:
             response = opener.open(request, timeout=30)  # noqa: S310
         except urllib.error.HTTPError as error:
             response = error
-        raw = response.read()
+        try:
+            raw = response.read()
+            if response.headers.get("Content-Encoding", "").lower() == "gzip":
+                raw = gzip.decompress(raw)
+        except (http.client.IncompleteRead, EOFError, OSError) as error:
+            # A body that stops early is a failure of the deployment, never to be parsed as if it were whole.
+            check(False, f"{path} arrives complete ({type(error).__name__}: the connection ended early)")
+            return 0, {k.lower(): v for k, v in response.headers.items()}, None, b""
         try:
             parsed = json.loads(raw)
         except ValueError:
@@ -82,7 +97,7 @@ def main() -> int:
         "discovery and lab findings are loaded",
     )
     if not args.local_mode:
-        check(meta["features"]["classifier_demo"] is False, "classifier is off in public mode")
+        check(bool(meta) and meta["features"]["classifier_demo"] is False, "classifier is off in public mode")
     check("ratelimit-limit" in headers, "rate limit headers present")
 
     for path in ("/api/docs", "/api/redoc", "/api/openapi.json", "/openapi.json"):
@@ -93,7 +108,7 @@ def main() -> int:
 
     status, _, lab, _ = call("/api/v1/lab/summary")
     check(
-        status == 200 and lab["models"]["test"]["final"]["macro_f1"] == 0.386,
+        status == 200 and lab is not None and lab["models"]["test"]["final"]["macro_f1"] == 0.386,
         "lab summary holds the validated test macro F1 0.386",
     )
 
@@ -124,6 +139,22 @@ def main() -> int:
         call("/api/v1/nothing")[0] == 404 and call("/api/v1/nothing")[2] is not None,
         "an unknown API path is a JSON 404",
     )
+
+    if args.check_rate_limit_identity:
+        # One client must be counted in one bucket: every answer, on a new connection each time, takes exactly one off
+        # the remaining count, and a forwarded address the visitor makes up changes nothing.
+        remaining = []
+        for i in range(10):
+            extra_header = {} if i < 5 else {"X-Forwarded-For": f"198.51.100.{i}"}
+            request = urllib.request.Request(  # noqa: S310
+                base + "/api/v1/meta", headers={"Accept-Encoding": "gzip", **extra, **extra_header}
+            )
+            with opener.open(request, timeout=30) as response:  # noqa: S310
+                remaining.append(int(response.headers.get("RateLimit-Remaining", -1)))
+        check(
+            all(a - b == 1 for a, b in zip(remaining, remaining[1:], strict=False)) and remaining[-1] >= 0,
+            f"one client is one rate limit bucket, also with made up forwarded addresses (remaining: {remaining})",
+        )
 
     for ok, message in results:
         print(f"{'ok  ' if ok else 'FAIL'}  {message}")

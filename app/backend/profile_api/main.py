@@ -56,6 +56,8 @@ def create_app(settings: Settings | None = None, *, clock: Callable[[], float] =
             general_per_minute=settings.rate_limit_general_per_minute,
             trust_proxy=settings.trust_proxy,
             trusted_proxy_hops=settings.trusted_proxy_hops,
+            max_inflight_searches=settings.rate_limit_max_inflight_searches,
+            max_inflight_per_visitor=settings.rate_limit_max_inflight_per_visitor,
             clock=clock,
         )
     app.add_middleware(SecurityHeadersMiddleware, hsts=settings.app_mode is AppMode.PUBLIC)
