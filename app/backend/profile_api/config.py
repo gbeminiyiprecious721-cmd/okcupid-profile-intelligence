@@ -32,6 +32,8 @@ class Settings(BaseSettings):
     embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
     max_request_bytes: int = limits.MAX_REQUEST_BYTES
     max_concurrent_searches: int = 2
+    # None keeps PyTorch's own choice. The vectors are the same at any thread count (a test checks).
+    torch_threads: int | None = Field(default=None, ge=1, le=16)
     # Rate limiting, per client address and per minute. See security/ratelimit.py for what it can and cannot do.
     rate_limit_enabled: bool = True
     rate_limit_search_per_minute: int = Field(default=30, ge=1)

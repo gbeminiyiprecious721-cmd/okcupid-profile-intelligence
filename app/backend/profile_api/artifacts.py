@@ -56,20 +56,22 @@ def load_discovery(settings: Settings) -> DiscoveryService | None:
         if sha256(settings.artifact_dir / name) != manifest["files"][name]["sha256"]:
             raise ArtifactError(f"{name} does not match the manifest. Rebuild the artifacts.")
 
-    import sentence_transformers
+    from importlib.metadata import version
+
     import sklearn
 
     built, running = (
         manifest["versions"],
         {
             "scikit-learn": sklearn.__version__,
-            "sentence-transformers": sentence_transformers.__version__,
+            # read from the package metadata: importing the package itself costs about 100 MB that serving never uses
+            "sentence-transformers": version("sentence-transformers"),
         },
     )
-    for package, version in running.items():
-        if built.get(package) != version:
+    for package, running_version in running.items():
+        if built.get(package) != running_version:
             raise ArtifactError(
-                f"Artifacts were built with {package} {built.get(package)}, this is {version}. Rebuild them."
+                f"Artifacts were built with {package} {built.get(package)}, this is {running_version}. Rebuild them."
             )
 
     document = json.loads(profiles_path.read_text())
@@ -78,7 +80,7 @@ def load_discovery(settings: Settings) -> DiscoveryService | None:
     ):
         raise ArtifactError("Every profile in the pool must be flagged synthetic.")
 
-    embedder = EmbeddingService(manifest["model"]["name"])
+    embedder = EmbeddingService(manifest["model"]["name"], torch_threads=settings.torch_threads)
     if embedder.revision != manifest["model"]["revision"]:
         raise ArtifactError(
             "The embedding model revision differs from the one used to build the artifacts. Rebuild them."

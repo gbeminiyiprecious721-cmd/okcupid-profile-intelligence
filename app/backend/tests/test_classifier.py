@@ -245,7 +245,7 @@ def test_public_mode_refuses_a_tier_one_folder_at_startup(standin_dir):
 
 def test_public_mode_never_loads_the_classifier_even_when_files_exist(standin_dir, monkeypatch):
     loaded = []
-    monkeypatch.setattr("profile_api.main.load_classifier", lambda *a, **k: loaded.append(a))
+    monkeypatch.setattr("profile_api.services.classifier.load_classifier", lambda *a, **k: loaded.append(a))  # imported inside the lifespan
     with TestClient(create_app(Settings(_env_file=None, app_mode="public"))):
         pass
     assert loaded == []

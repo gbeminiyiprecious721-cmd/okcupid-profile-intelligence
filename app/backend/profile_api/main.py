@@ -14,7 +14,6 @@ from profile_api.security.body_limit import BodyLimitMiddleware
 from profile_api.security.headers import SecurityHeadersMiddleware
 from profile_api.security.ratelimit import RateLimitMiddleware
 from profile_api.security.request_log import RequestLogMiddleware
-from profile_api.services.classifier import load_classifier
 from profile_api.services.lab_data import load_lab
 from profile_api.web import mount_web
 
@@ -29,6 +28,9 @@ def create_app(settings: Settings | None = None, *, clock: Callable[[], float] =
         app.state.lab = load_lab()
         # Tier 1 files exist only in local mode. Public mode does not even look for them.
         if settings.app_mode is AppMode.LOCAL and settings.tier1_artifact_dir is not None:
+            # imported here: the classifier needs pandas, and public mode (which never loads it) should not pay for it
+            from profile_api.services.classifier import load_classifier
+
             app.state.classifier = load_classifier(settings.tier1_artifact_dir, settings.content_dir)
         yield
 

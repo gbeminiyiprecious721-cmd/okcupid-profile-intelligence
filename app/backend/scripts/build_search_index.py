@@ -46,7 +46,7 @@ def main() -> None:
     vectorizer = tfidf.make_tfidf().fit(texts)
     matrix = vectorizer.transform(texts)
 
-    embedder = EmbeddingService(settings.embedding_model)
+    embedder = EmbeddingService(settings.embedding_model, backend="sentence-transformers")  # the notebook's call: the index vectors stay exactly as before
     embeddings = embedder.encode(texts).astype(np.float32)
 
     out = settings.artifact_dir
