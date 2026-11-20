@@ -74,4 +74,7 @@ USER 1000
 EXPOSE 10000
 
 # One worker: the models are loaded once, and the rate limiter counts in one place.
-CMD ["sh", "-c", "exec uvicorn profile_api.main:app --host 0.0.0.0 --port ${PORT} --workers 1 --no-server-header --no-access-log"]
+# --forwarded-allow-ips pins which peers uvicorn believes about X-Forwarded-For. Without it uvicorn reads the
+# FORWARDED_ALLOW_IPS environment variable, and a value of * makes the request's socket address the first, visitor
+# written entry of the header. The rate limiter reads the header itself, from the right, so uvicorn must not rewrite it.
+CMD ["sh", "-c", "exec uvicorn profile_api.main:app --host 0.0.0.0 --port ${PORT} --workers 1 --no-server-header --no-access-log --forwarded-allow-ips 127.0.0.1"]
