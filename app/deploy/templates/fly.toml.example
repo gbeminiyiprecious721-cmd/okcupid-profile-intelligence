@@ -4,7 +4,7 @@ app = "profile-intelligence-example"
 primary_region = "lhr"
 
 [build]
-  # Build the image from the bundle first (see deploy/README.md), then deploy that image.
+  # Build the image from the bundle first (see operations_and_rollback.md), then deploy that image.
 
 [env]
   PROFILE_APP_MODE = "public"

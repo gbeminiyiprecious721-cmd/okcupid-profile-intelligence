@@ -1,6 +1,6 @@
 # Security configuration for staging and public deployment
 
-> **Revised 16 November 2026.** Creating a Docker Space on Hugging Face needs a paid plan (PRO), and a private Space has no public address. The Hugging Face parts of this document are superseded by [`staging_options.md`](staging_options.md). Statements below that call a Space free, or say to open its direct address, are wrong.
+> **Revised 16 November 2026.** Creating a Docker Space on Hugging Face needs a paid plan (PRO), and a private Space has no public address. The Hugging Face parts of this document are superseded: the application is deployed on Render (see `operations_and_rollback.md`). Statements below that call a Space free, or say to open its direct address, are wrong.
 
 Everything here is already implemented in the application and covered by tests. This page says what each setting is, what value to use, and how to check it on a real host. `scripts/smoke_test.py` checks most of it from outside, and `scripts/check_production_config.py` checks the settings before start up.
 
@@ -39,7 +39,11 @@ Per client address, over a sliding minute, in the application:
 | search | `POST /api/v1/discover/similar` and `POST /api/v1/classify/predict` | 30 a minute | `PROFILE_RATE_LIMIT_SEARCH_PER_MINUTE` |
 | general | every other `/api` path except health | 240 a minute | `PROFILE_RATE_LIMIT_GENERAL_PER_MINUTE` |
 | exempt | `GET /api/v1/health` | none | |
+| global (all visitors together) | searches in progress at the same moment | 4 | `PROFILE_RATE_LIMIT_MAX_INFLIGHT_SEARCHES` (0 turns it off) |
+| global, one visitor's share | of those, how many one visitor may hold | 2 | `PROFILE_RATE_LIMIT_MAX_INFLIGHT_PER_VISITOR` |
 Over the limit the answer is `429` with `Retry-After` and `RateLimit-Limit` and `RateLimit-Remaining` headers, in the standard error shape, with no echo of the request. The page explains it and keeps what was typed. Static files are not limited by the application; the platform's own protection covers them.
+
+**Global safeguard (Phase 11F).** The Free plan has 0.1 of a CPU. Measured on that limit, a search takes about a second and a long one much longer, so 16 long searches at once queued for up to 99 seconds. A count per minute cannot protect against that, because the cost of one search varies by a factor of four. The bound is on searches *in progress*: when 4 are already running or waiting (or the visitor already has 2), a new one is refused at once with `429`, code `busy`, `Retry-After: 5`, and the page shows its usual "try again" panel. It only counts requests the per client limit let through, and a request refused for being busy does not use up the visitor's own quota. Normal use (a few visitors at the same moment) never reaches it.
 
 **The client address behind a proxy is the one thing to verify on each platform.** The application sees the proxy's address unless told otherwise, which would put every visitor in one bucket.
 - `PROFILE_TRUST_PROXY=true` makes it read `X-Forwarded-For`; `PROFILE_TRUSTED_PROXY_HOPS` says which entry from the right is the client (default 1: the last entry, appended by the one proxy in front).
@@ -67,7 +71,7 @@ Over the limit the answer is `429` with `Retry-After` and `RateLimit-Limit` and 
 | `PROFILE_ALLOWED_ORIGINS` | not needed on one origin | if set, https only |
 | `PROFILE_TRUST_PROXY` | `true` behind the host's proxy, after the check above | image default is `true`; set `false` if unsure and run a limit test |
 | `PROFILE_TRUSTED_PROXY_HOPS` | `1` unless the platform needs more | |
-| `PROFILE_RATE_LIMIT_*` | defaults | |
+| `PROFILE_RATE_LIMIT_*` | defaults | includes `PROFILE_RATE_LIMIT_MAX_INFLIGHT_SEARCHES` (4) and `PROFILE_RATE_LIMIT_MAX_INFLIGHT_PER_VISITOR` (2) |
 | `PROFILE_REQUEST_LOG` | `true` | |
 | `HF_HUB_OFFLINE`, `TRANSFORMERS_OFFLINE` | `1` | set by the image; the model is already in the image |
 | `PROFILE_TIER1_ARTIFACT_DIR` | **never set** | public mode refuses to start if it is |

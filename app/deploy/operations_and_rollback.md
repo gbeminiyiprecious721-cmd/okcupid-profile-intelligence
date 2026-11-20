@@ -1,8 +1,21 @@
 # Deployment configuration, release and rollback plan
 
-> **Revised 16 November 2026.** Creating a Docker Space on Hugging Face needs a paid plan (PRO), and a private Space has no public address. The Hugging Face parts of this document are superseded by [`staging_options.md`](staging_options.md). Statements below that call a Space free, or say to open its direct address, are wrong.
+> **Updated 20 November 2026.** The application is deployed and live at https://profile-intelligence.onrender.com, on Render's free plan, built from `app/deploy/Dockerfile.render`. The section "Deployed on Render" is current. The Hugging Face Space steps further down are the original staging plan, kept for reference: that host needs a paid plan for a Docker Space, so it was not used. The release, pre flight and rollback principles apply to any host.
 
-Nothing has been deployed. This is the plan to follow, step by step, after approval.
+## Deployed on Render
+| Setting | Value |
+|---|---|
+| Service | one Docker web service, free plan, region Frankfurt, one instance |
+| Built from | `app/deploy/Dockerfile.render`, with the repository root as the build context |
+| Deploys | manual only. Automatic deploys are off, so a push never changes the live site |
+| Health check | `/api/v1/health` |
+| Environment | `PROFILE_APP_MODE=public`. The image sets the rest (see `security_configuration.md`) |
+| Release | a deploy of one Git commit. The image holds no secrets, no data and no volume |
+| Roll back by | a manual deploy of the previous commit. The service restarts on it |
+| Free plan behaviour | the service sleeps when idle. The first visit after that takes about 80 seconds, a warm search about 0.3 seconds |
+| Verify a deploy | `python app/backend/scripts/smoke_test.py https://profile-intelligence.onrender.com --no-proxy` (23 checks) |
+
+The rest of this document is the original plan, written before the first deployment.
 
 ## What a release is
 A **release** is one immutable container image built from one bundle (`app/deploy/build/bundle`, 75 files). The bundle's `BUNDLE_MANIFEST.json` lists the SHA 256 of every file in it and is copied into the image at `/app/BUNDLE_MANIFEST.json`, so any running release can be traced to exact files.
@@ -40,6 +53,7 @@ The service is stateless, so rolling back is safe and loses nothing.
 **Trigger:** the smoke test fails after a deploy, 5xx rate over 2%, the health check fails 3 times, or a privacy test fails.
 | Platform | Roll back by | Time |
 |---|---|---|
+| Render | manual deploy of the previous commit | one build, about 10 to 20 minutes, then about 80 seconds to start |
 | Hugging Face Space | `git revert` the last commit in the Space repository (or reset to the previous release's commit) and push; the Space rebuilds that version | one rebuild, 5 to 10 minutes |
 | Fly.io | `fly releases` then `fly deploy --image <previous image>` | about a minute |
 | Cloud Run | shift traffic to the previous revision (`gcloud run services update-traffic --to-revisions=PREVIOUS=100`) | seconds |

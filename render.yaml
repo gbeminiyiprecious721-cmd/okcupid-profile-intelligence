@@ -1,5 +1,6 @@
 # Render Blueprint for Profile Intelligence: one Docker web service on the Free plan.
-# NOT APPLIED. Nothing here has been created on Render. See app/planning/phase11a/README.md before using it.
+# This describes the service that is live at https://profile-intelligence.onrender.com. It was created in the Render
+# dashboard with these settings. Applying this file to another account creates a copy of it.
 # There are no secrets: the application is public mode only and reads no credential. Every value below is safe to
 # keep in Git.
 services:
@@ -7,7 +8,7 @@ services:
     name: profile-intelligence
     runtime: docker
     plan: free
-    # region: choose the one closest to your visitors (it cannot be changed later). The default is oregon.
+    region: frankfurt             # cannot be changed after the service exists
     dockerfilePath: ./app/deploy/Dockerfile.render
     dockerContext: .
     healthCheckPath: /api/v1/health

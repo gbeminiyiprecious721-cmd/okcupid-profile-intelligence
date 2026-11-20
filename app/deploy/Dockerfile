@@ -1,9 +1,8 @@
 # syntax=docker/dockerfile:1.7
 #
 # One container: the API and the built web application, on one origin. Public mode only.
-# NOT BUILT OR RUN YET. Docker is not installed on the development computer, so this file is unverified. The same
-# steps were tested in a clean room (new virtual environment, empty model cache, files from the bundle only) and are
-# described in deploy/README.md. The first real build is a step in the staging plan.
+# A general purpose image. The live service uses Dockerfile.render in this folder. The steps were tested in a clean room
+# (new virtual environment, empty model cache, files from the bundle only). See operations_and_rollback.md.
 #
 # Build context = the bundle written by app/backend/scripts/make_deploy_bundle.py, and nothing else:
 #     python app/backend/scripts/make_deploy_bundle.py

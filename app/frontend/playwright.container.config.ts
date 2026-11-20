@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// The browser suites against a container that is already running (see app/deploy/local_staging.md).
+// The browser suites against a container that is already running (for example one started from app/deploy/Dockerfile).
 // The container serves the web application itself, so there is nothing else to start.
 // Start the container with generous rate limits for this run: the tests send far more searches than a person would.
 const baseURL = process.env.CONTAINER_URL ?? "http://127.0.0.1:8080";

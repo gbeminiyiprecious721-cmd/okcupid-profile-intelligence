@@ -1,6 +1,6 @@
 # Profile Intelligence application
 
-An interactive companion to the notebook in the parent folder. It runs locally: Profile Discovery searches a pool of invented profiles with two methods, and the Data Science Lab shows the notebook's verified findings. It is for demonstration only. Nothing is deployed.
+An interactive companion to the notebook in the parent folder. It runs locally: Profile Discovery searches a pool of invented profiles with two methods, and the Data Science Lab shows the notebook's verified findings. It is for demonstration only. A live copy runs at https://profile-intelligence.onrender.com, on Render's free plan.
 
 **Profile Discovery.** Write a fictional profile and see the most similar fictional profiles, each with an explanation, comparing TF-IDF with sentence embeddings.
 
@@ -123,4 +123,4 @@ cd ../frontend && npm run build && npm run headers           # serve dist/ with 
 Checks: `scripts/audit_exposure.py --real-essays ../../profiles.csv` (nothing served matches a real essay), `scripts/measure_performance.py`, and in the frontend `npx playwright test -c playwright.prod.config.ts` (production build with the policy), `-c playwright.browsers.config.ts` (WebKit and Firefox) and `-c playwright.local.config.ts` (classifier, local mode).
 
 ## Deployment preparation
-See `deploy/README.md`: hosting comparison, recommended architecture, security configuration, monitoring design, VoiceOver checklist, staging plan and rollback. Build the allowlisted bundle with `backend/scripts/make_deploy_bundle.py`. Check a running deployment with `backend/scripts/smoke_test.py`.
+The live service is built from `deploy/Dockerfile.render`. The documents in `deploy/` cover the security configuration (`security_configuration.md`), releases and rollback (`operations_and_rollback.md`), monitoring (`monitoring.md`) and the VoiceOver checklist (`voiceover_checklist.md`). Build the allowlisted bundle with `backend/scripts/make_deploy_bundle.py`. Check a running deployment with `backend/scripts/smoke_test.py`.
