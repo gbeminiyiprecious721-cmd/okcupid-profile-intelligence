@@ -1,0 +1,17 @@
+# The build context is already the allowlisted bundle. This is a second lock: if the context ever held more, these
+# are refused by name, so private files cannot be sent to the builder.
+**/*.csv
+**/*.joblib
+**/*.npy
+**/*.npz
+**/*.ipynb
+**/*.pkl
+**/tier1
+**/artifacts
+**/classifier
+**/.env*
+**/.venv
+**/node_modules
+**/__pycache__
+**/.git
+**/tests

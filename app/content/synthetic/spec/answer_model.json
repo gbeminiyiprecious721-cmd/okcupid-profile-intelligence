@@ -1,0 +1,165 @@
+{
+ "description": "Illustrative answer model for the synthetic pool. These frequencies are hand chosen. They are anchored only to the headline figures the notebook prints (most common answer and missing rate per field) and were not estimated from any profile. links multiplies the chance of an answer for profiles with a theme. Frequencies are normalised to sum to one.",
+ "fields": {
+  "smokes": {
+   "missing": 0.06,
+   "options": {
+    "no": 0.81,
+    "sometimes": 0.09,
+    "when drinking": 0.06,
+    "yes": 0.02,
+    "trying to quit": 0.02
+   }
+  },
+  "drugs": {
+   "missing": 0.23,
+   "options": {
+    "never": 0.82,
+    "sometimes": 0.17,
+    "often": 0.01
+   }
+  },
+  "diet_type": {
+   "missing": 0.39,
+   "options": {
+    "anything": 0.58,
+    "vegetarian": 0.17,
+    "vegan": 0.06,
+    "other": 0.12,
+    "halal": 0.04,
+    "kosher": 0.03
+   }
+  },
+  "education_level": {
+   "missing": 0.1,
+   "options": {
+    "college": 0.55,
+    "masters": 0.2,
+    "two year college": 0.08,
+    "high school": 0.06,
+    "phd": 0.05,
+    "law school": 0.03,
+    "med school": 0.03
+   }
+  },
+  "job": {
+   "missing": 0.13,
+   "options": {
+    "other": 0.135,
+    "science / tech / engineering": 0.108,
+    "computer / hardware / software": 0.09,
+    "artistic / musical / writer": 0.081,
+    "sales / marketing / biz dev": 0.081,
+    "education / academia": 0.072,
+    "student": 0.072,
+    "medicine / health": 0.063,
+    "banking / financial / real estate": 0.054,
+    "executive / management": 0.045,
+    "entertainment / media": 0.045,
+    "law / legal services": 0.027,
+    "hospitality / travel": 0.027,
+    "construction / craftsmanship": 0.027,
+    "clerical / administrative": 0.018,
+    "political / government": 0.018,
+    "transportation": 0.009,
+    "unemployed": 0.009,
+    "retired": 0.009,
+    "military": 0.009
+   }
+  },
+  "offspring": {
+   "missing": 0.58,
+   "options": {
+    "doesn't have kids": 0.31,
+    "doesn't have kids, but might want them": 0.22,
+    "doesn't have kids, but wants them": 0.17,
+    "doesn't want kids": 0.12,
+    "has a kid": 0.08,
+    "has kids": 0.06,
+    "has kids, and wants more": 0.04
+   }
+  },
+  "pets": {
+   "missing": 0.32,
+   "options": {
+    "likes dogs and cats": 0.37,
+    "likes dogs": 0.2,
+    "likes cats": 0.12,
+    "has a dog": 0.09,
+    "has a cat": 0.08,
+    "has both": 0.04,
+    "prefers neither": 0.1
+   }
+  },
+  "status": {
+   "missing": 0.0,
+   "options": {
+    "single": 0.93,
+    "seeing someone": 0.04,
+    "available": 0.02,
+    "married": 0.01
+   }
+  },
+  "body_type": {
+   "missing": 0.08,
+   "options": {
+    "average": 0.27,
+    "fit": 0.27,
+    "athletic": 0.2,
+    "thin": 0.1,
+    "curvy": 0.09,
+    "a little extra": 0.07
+   }
+  }
+ },
+ "theme_links": {
+  "pets": {
+   "pets": {
+    "likes dogs and cats": 3,
+    "likes dogs": 3,
+    "has a dog": 4,
+    "has a cat": 3,
+    "has both": 4,
+    "likes cats": 2
+   }
+  },
+  "fitness": {
+   "body_type": {
+    "athletic": 3,
+    "fit": 3
+   }
+  },
+  "family": {
+   "offspring": {
+    "doesn't have kids, but wants them": 3,
+    "has kids": 2,
+    "has a kid": 2
+   }
+  },
+  "technology": {
+   "job": {
+    "computer / hardware / software": 4,
+    "science / tech / engineering": 3
+   }
+  },
+  "creative": {
+   "job": {
+    "artistic / musical / writer": 4,
+    "entertainment / media": 2
+   }
+  },
+  "volunteering": {
+   "job": {
+    "education / academia": 2,
+    "medicine / health": 2
+   }
+  },
+  "cooking": {
+   "diet_type": {
+    "vegetarian": 2,
+    "vegan": 2,
+    "anything": 1
+   }
+  }
+ }
+}

@@ -1,0 +1,38 @@
+{
+ "checked_on": "2026-11-15",
+ "profiles_sha256": "66edb4457aeba255741900803f76ce8eb1779208380a22000e536a07e761aaca",
+ "pool_size": 800,
+ "starters": 6,
+ "passed": true,
+ "note": "Counts only. The real essays were read locally to count overlapping word windows and nothing from them is stored.",
+ "checks": {
+  "schema_ok": true,
+  "all_flagged_synthetic": true,
+  "ids_unique": true,
+  "handles_unique": true,
+  "answers_in_vocabulary": true,
+  "words_per_profile": {
+   "min": 40,
+   "median": 79,
+   "max": 153
+  },
+  "length_in_range_40_to_200": true,
+  "contact_pattern_hits": 0,
+  "digit_characters": 0,
+  "personal_name_hits": [],
+  "sensitive_or_gendered_term_hits": [],
+  "drinking_or_drug_term_hits": [],
+  "max_near_duplicate_similarity": 0.493,
+  "near_duplicates_ok": true,
+  "themes_used": true,
+  "real_essay_overlap": {
+   "checked": true,
+   "essays_scanned": 441351,
+   "real_windows_seven": 18207860,
+   "synthetic_windows_7": 61840,
+   "synthetic_windows_5": 63452,
+   "seven_word_hits": 0,
+   "five_word_hits_informational": 4753
+  }
+ }
+}

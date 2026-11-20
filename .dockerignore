@@ -1,0 +1,24 @@
+# Build context for app/deploy/Dockerfile.render (the repository root). Only the application folder is sent to the
+# builder, and these are refused by name even inside it. The real allowlist is make_deploy_bundle.py.
+*
+!app
+**/*.csv
+**/*.joblib
+**/*.npy
+**/*.npz
+**/*.ipynb
+**/*.pkl
+**/*.pptx
+**/tier1
+app/backend/artifacts
+app/backend/.venv
+app/backend/tests
+app/frontend/node_modules
+app/frontend/dist
+app/frontend/test-results
+app/deploy/build
+app/deploy/local_only
+app/planning
+**/__pycache__
+**/.env*
+**/.git

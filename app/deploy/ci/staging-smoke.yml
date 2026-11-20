@@ -1,0 +1,16 @@
+# DRAFT. Not active. A scheduled check of the staging site from outside, with fictional input only (no secrets).
+# Copy to .github/workflows/ in the private repository after staging exists. Set the repository variable STAGING_URL.
+name: staging-smoke
+on:
+  schedule:
+    - cron: "17 */6 * * *"     # every six hours
+  workflow_dispatch:
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python app/backend/scripts/smoke_test.py "${{ vars.STAGING_URL }}"

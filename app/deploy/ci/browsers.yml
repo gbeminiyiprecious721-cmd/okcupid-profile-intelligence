@@ -1,0 +1,33 @@
+# DRAFT. Not active: it lives in app/deploy/ci, not in .github/workflows. To use it, copy it to .github/workflows/
+# in the PRIVATE repository once you approve pushing. It runs the browser suites on Linux, including Firefox, which
+# cannot start on the development computer. Private repositories get a monthly allowance of free Actions minutes
+# (check the current allowance on GitHub's pricing page). This job takes roughly ten minutes a run.
+name: browsers
+on:
+  workflow_dispatch:        # started by hand only
+jobs:
+  browsers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: actions/setup-node@v4
+        with: { node-version: "26" }
+      - name: Backend (CPU only torch, model, search index)
+        working-directory: app/backend
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install torch==2.15.0 --index-url https://download.pytorch.org/whl/cpu
+          .venv/bin/pip install -r requirements_dev.txt
+          .venv/bin/python scripts/download_model.py
+          .venv/bin/python scripts/build_search_index.py
+      - name: Frontend
+        working-directory: app/frontend
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium firefox webkit
+      - name: Browser tests on the production build, in Chromium, Firefox and WebKit
+        working-directory: app/frontend
+        run: npx playwright test -c playwright.browsers.config.ts --project=firefox --project=webkit

@@ -1,0 +1,11 @@
+{
+  "note": "Fictional inputs for the educational classification page. Each entry belongs to one of the six starter profiles in synthetic/profiles.json, whose text and nine lifestyle answers are used as they are. The fields below complete the model's 19 inputs. Every value is invented, and none comes from a real profile.",
+  "personas": {
+    "ex_782bfd92": {"age": 29, "height": 64, "languages_count": 2, "education_status": "graduated", "income_answered": 0, "sex": "f", "location": "san francisco, california"},
+    "ex_a4ddf3b3": {"age": 34, "height": 70, "languages_count": 1, "education_status": "graduated", "income_answered": 1, "sex": "m", "location": "oakland, california"},
+    "ex_6c98e4ac": {"age": 26, "height": 66, "languages_count": 2, "education_status": "graduated", "income_answered": 0, "sex": "f", "location": "berkeley, california"},
+    "ex_dca5494f": {"age": 31, "height": 68, "languages_count": 1, "education_status": "graduated", "income_answered": 1, "sex": "m", "location": "san francisco, california"},
+    "ex_dff87215": {"age": 38, "height": 71, "languages_count": 3, "education_status": "graduated", "income_answered": 0, "sex": "m", "location": "san francisco, california"},
+    "ex_caf512e9": {"age": 27, "height": 65, "languages_count": 2, "education_status": "graduated", "income_answered": 0, "sex": "f", "location": "oakland, california"}
+  }
+}

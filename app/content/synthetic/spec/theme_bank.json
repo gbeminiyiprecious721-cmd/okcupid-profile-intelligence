@@ -1,0 +1,520 @@
+{
+ "themes": {
+  "travel": {
+   "label": "Travel",
+   "keywords": [
+    "travel",
+    "trip",
+    "trips",
+    "journey",
+    "airport",
+    "airports",
+    "train",
+    "ferry",
+    "ferries",
+    "map",
+    "maps",
+    "passport",
+    "explore",
+    "exploring",
+    "suitcase",
+    "guesthouse",
+    "abroad",
+    "wander",
+    "roam"
+   ],
+   "main": [
+    "My favourite weekends begin with a train ticket and no firm plan for where I end up.",
+    "I keep a battered notebook of small discoveries from every trip, like a bakery that opens at dawn or a bridge with a good view.",
+    "I would rather get lost in a new neighbourhood for an afternoon than tick off a list of famous sights.",
+    "Learning ten useful phrases before a trip is my idea of homework I actually enjoy.",
+    "Night markets, slow ferries and cheap guesthouses are my kind of luxury.",
+    "I plan the first day of a trip and leave everything after that to curiosity.",
+    "Airports at six in the morning feel like the start of something to me.",
+    "I collect small maps from places I have visited and they are slowly taking over a wall.",
+    "Taking the long way home, even on an ordinary day, is a habit I never grew out of.",
+    "I am happiest when I can point at a map and say that is where we should go next."
+   ],
+   "minor": [
+    "I save up for one big trip every year.",
+    "Travel stories make the best conversation.",
+    "I always say yes to a spontaneous day trip.",
+    "A half packed suitcase is a good sign for me."
+   ]
+  },
+  "cooking": {
+   "label": "Cooking",
+   "keywords": [
+    "cook",
+    "cooking",
+    "bake",
+    "baking",
+    "kitchen",
+    "recipe",
+    "recipes",
+    "soup",
+    "sourdough",
+    "bread",
+    "spice",
+    "spices",
+    "sauce",
+    "omelette",
+    "dinner",
+    "chopping",
+    "farmers",
+    "ingredient"
+   ],
+   "main": [
+    "Sunday afternoons usually find me with a pot of something slow on the stove and music on.",
+    "I bake bread at weekends and I am still arguing with my sourdough starter.",
+    "Cooking for friends is how I say thank you better than I can with words.",
+    "I read recipes the way other people read novels, with a pen in hand.",
+    "My spice shelf is out of control and I regret nothing.",
+    "I will happily spend an hour on a sauce and ten minutes eating it.",
+    "The farmers market is my weekly ritual, and I always come home with more than I planned.",
+    "I am trying to master a proper omelette before I turn my attention to anything fancier.",
+    "A shared kitchen, a loud playlist and a pile of onions to chop sounds like a perfect evening.",
+    "I make soup whenever the weather turns, and I am generous with the portions."
+   ],
+   "minor": [
+    "I cook most nights and rarely follow a recipe exactly.",
+    "Leftovers for lunch are one of life's quiet joys.",
+    "I like trying a new ingredient every week.",
+    "My kitchen is small but it gets a lot of use."
+   ]
+  },
+  "music": {
+   "label": "Music",
+   "keywords": [
+    "music",
+    "song",
+    "songs",
+    "record",
+    "records",
+    "guitar",
+    "piano",
+    "concert",
+    "concerts",
+    "band",
+    "playlist",
+    "playlists",
+    "album",
+    "albums",
+    "sing",
+    "singing",
+    "jazz",
+    "drummer",
+    "bass"
+   ],
+   "main": [
+    "There is almost always a record playing in my flat, and I am happy to explain why it is good.",
+    "I play guitar badly but with great enthusiasm, mostly for an audience of houseplants.",
+    "Live shows in small rooms where you can see the drummer sweat are my favourite kind of night.",
+    "I make playlists for every mood, journey and bad day, and I take requests.",
+    "Finding a song nobody else has heard yet gives me a ridiculous amount of joy.",
+    "I sing in the shower, in traffic and, if pressed, at a party.",
+    "My taste runs from jazz trios to loud electronic sets, and I do not see a contradiction.",
+    "I still buy albums and read the liner notes, which my friends find charming or alarming.",
+    "Learning piano as an adult is humbling and I recommend it.",
+    "I could talk for an hour about why one particular bass line is perfect."
+   ],
+   "minor": [
+    "Music is on from the moment I wake up.",
+    "I go to more concerts than is sensible.",
+    "Ask me for a song recommendation and see what happens.",
+    "I hum while I cook and I am told it is tuneful."
+   ]
+  },
+  "fitness": {
+   "label": "Fitness",
+   "keywords": [
+    "run",
+    "running",
+    "runs",
+    "climb",
+    "climbing",
+    "swim",
+    "swimming",
+    "laps",
+    "yoga",
+    "cycling",
+    "gym",
+    "marathon",
+    "training",
+    "stretch",
+    "workout",
+    "strength",
+    "fitness",
+    "exercise"
+   ],
+   "main": [
+    "I run early, before the city wakes up, and it is the highlight of my day.",
+    "Climbing at the indoor wall twice a week keeps me stubborn and strong.",
+    "Last year I entered a half marathon and found that I like the training more than the race.",
+    "Swimming laps clears my head better than anything else I have tried.",
+    "I stretch more than I should admit, usually while watching something silly.",
+    "My idea of a date includes a long walk, a hill and a reward at the top.",
+    "I am slowly getting better at yoga, which means I fall over less often.",
+    "Cycling to work is the only commute I have ever liked.",
+    "Strength training taught me that patience works better than motivation.",
+    "I track my runs, but only because I enjoy beating last month's slowest pace."
+   ],
+   "minor": [
+    "I work out most mornings.",
+    "Active weekends suit me best.",
+    "A friendly volleyball game is an easy yes from me.",
+    "A tired body and a quiet mind is my favourite combination."
+   ]
+  },
+  "outdoors": {
+   "label": "Outdoors",
+   "keywords": [
+    "hike",
+    "hiking",
+    "trail",
+    "trails",
+    "camp",
+    "camping",
+    "campfire",
+    "kayak",
+    "kayaking",
+    "stargazing",
+    "forest",
+    "trees",
+    "hilltop",
+    "outside",
+    "outdoors",
+    "sunrise",
+    "weather",
+    "fresh"
+   ],
+   "main": [
+    "Give me a trail, a thermos and a reasonable sunrise and I am set for the day.",
+    "I camp whenever the forecast allows and sometimes when it does not.",
+    "I know the names of more trees than people, which is a fair summary of my character.",
+    "Kayaking on flat water in the evening is as close to a perfect hour as I know.",
+    "I keep a small pack by the door so a hike is never more than a decision away.",
+    "Stargazing from a cold field is worth every layer of clothing it requires.",
+    "I like the kind of walk where nobody talks for twenty minutes and nobody minds.",
+    "I am learning to read the weather from the clouds and I am right about half the time.",
+    "A campfire, a tin mug of tea and a decent story is my kind of night.",
+    "Fresh air fixes more problems than most things I have tried."
+   ],
+   "minor": [
+    "Whenever the weather allows, you will find me out of doors.",
+    "Rain is not a good enough reason to cancel a hike.",
+    "I have strong opinions about good hiking socks.",
+    "Sunrise from a hilltop beats any alarm clock."
+   ]
+  },
+  "books": {
+   "label": "Books",
+   "keywords": [
+    "book",
+    "books",
+    "read",
+    "reading",
+    "novel",
+    "novels",
+    "bookshop",
+    "library",
+    "fiction",
+    "poems",
+    "stories",
+    "shelf",
+    "author",
+    "margins"
+   ],
+   "main": [
+    "My to read pile has its own shelf, and it keeps winning.",
+    "I love a long novel that you can disappear into for a rainy week.",
+    "I annotate in the margins and I have no apology for it.",
+    "A good second hand bookshop can swallow my whole afternoon.",
+    "I read on the train, in the bath and, shamefully, while walking.",
+    "I run a tiny book swap with a few friends and the arguments are half the fun.",
+    "Short stories are my secret favourite because they leave room for you to think.",
+    "I will lend you a book, but I will remember who has it.",
+    "Reading aloud to someone you like is underrated.",
+    "I keep a list of sentences I wish I had written."
+   ],
+   "minor": [
+    "Most of my reading is fiction, and there is plenty of it.",
+    "Ask me what I am reading and settle in.",
+    "My favourite place is a corner with a lamp and a book.",
+    "I buy more books than I finish, and I accept it."
+   ]
+  },
+  "technology": {
+   "label": "Technology",
+   "keywords": [
+    "code",
+    "coding",
+    "software",
+    "computer",
+    "computers",
+    "gadget",
+    "gadgets",
+    "programming",
+    "debugging",
+    "server",
+    "open",
+    "source",
+    "interface",
+    "automate",
+    "tinker",
+    "tools",
+    "digital",
+    "sensors"
+   ],
+   "main": [
+    "I build small tools for myself at weekends, most of which only I will ever use.",
+    "I get unreasonably excited about a well designed interface.",
+    "Taking apart an old gadget to see how it works is my idea of fun.",
+    "I tinker with a home server, a few sensors and a plant that now reports its water level to my phone.",
+    "Debugging feels a bit like detective work, and I find it deeply satisfying.",
+    "I follow open source projects the way some people follow sports teams.",
+    "My favourite problems are the ones that look simple and turn out to be hiding something.",
+    "I automate small annoyances, then spend longer on the automation than the annoyance ever took.",
+    "I like explaining technical ideas in plain words, and I get better at it each time.",
+    "Learning a new programming language every year keeps me humble."
+   ],
+   "minor": [
+    "I work with computers and I like it.",
+    "I am the person friends text when their wifi breaks.",
+    "I enjoy a good puzzle, digital or otherwise.",
+    "Gadgets with too many buttons make me happy."
+   ]
+  },
+  "family": {
+   "label": "Family",
+   "keywords": [
+    "family",
+    "relatives",
+    "kids",
+    "children",
+    "nieces",
+    "nephews",
+    "grandparents",
+    "home",
+    "holiday",
+    "traditions",
+    "parents",
+    "siblings",
+    "dinners",
+    "table"
+   ],
+   "main": [
+    "Family dinners on Sundays are loud, long and one of my favourite things in the world.",
+    "I talk to at least one relative most days, and I am very close to all of them.",
+    "Building a home with plenty of noise, mess and shared jokes is the goal.",
+    "I babysit my nieces and nephews, and apparently I am the fun relative.",
+    "Holiday traditions matter to me, even the slightly ridiculous ones.",
+    "The idea of a life with kids in it someday, and a dog, and a messy garden, appeals to me.",
+    "Being reliable for the people I love is the thing I am proudest of.",
+    "I call my grandparents every week and I always learn something.",
+    "A house that smells of cooking and has someone asleep on the sofa sounds right to me.",
+    "Home, for me, is wherever the people I love are sitting around one table."
+   ],
+   "minor": [
+    "My family sits at the centre of how I spend my time.",
+    "Time with the people closest to me comes first.",
+    "I love a crowded table.",
+    "Weekends often involve a relative or two."
+   ]
+  },
+  "humour": {
+   "label": "Humour",
+   "keywords": [
+    "laugh",
+    "laughing",
+    "funny",
+    "jokes",
+    "joke",
+    "puns",
+    "pun",
+    "banter",
+    "silly",
+    "humour",
+    "teasing",
+    "witty",
+    "ridiculous"
+   ],
+   "main": [
+    "I laugh at my own jokes half a second before the punchline, which ruins them and delights me.",
+    "I collect terrible puns and deploy them without mercy.",
+    "A friend once called my sense of humour dry; I think it is simply well aged.",
+    "I would rather share a ridiculous story than a polished one.",
+    "Quick banter, slow burn teasing and the occasional silly voice are all part of the package.",
+    "The best conversations are the ones where we both end up laughing too hard to finish a sentence.",
+    "I do a very convincing impression of a confused seagull.",
+    "Life is too short to take every email seriously.",
+    "I keep a mental list of funny things people say, and I quote them fondly.",
+    "Self deprecating humour is my native language, and I am working on being kinder to myself."
+   ],
+   "minor": [
+    "I laugh easily and often.",
+    "Please bring a sense of humour and a spare pun.",
+    "Taking myself seriously has never been my strong suit.",
+    "Good banter is a deal breaker, in the best way."
+   ]
+  },
+  "creative": {
+   "label": "Creative work",
+   "keywords": [
+    "sketch",
+    "sketching",
+    "paint",
+    "painting",
+    "write",
+    "writing",
+    "novel",
+    "poems",
+    "poetry",
+    "photograph",
+    "photographs",
+    "ceramics",
+    "gallery",
+    "galleries",
+    "art",
+    "craft",
+    "draw",
+    "drawing",
+    "print",
+    "printing",
+    "project"
+   ],
+   "main": [
+    "I sketch on the back of receipts, and my bag is full of them.",
+    "I am halfway through a novel I have been writing for three years, and that is fine.",
+    "Painting badly in a messy corner of my flat is the best therapy I have found.",
+    "I take photographs of ordinary doorways and I could explain why for a long time.",
+    "Making things by hand, from ceramics to wonky bookshelves, is how I relax.",
+    "Writing short poems on the bus is a habit I picked up and cannot drop.",
+    "I go to galleries on weekdays, when it is quiet enough to hear yourself think.",
+    "I am learning to print on fabric and my kitchen is covered in ink.",
+    "There is a half finished project on every flat surface of my home.",
+    "I believe everyone has a creative streak, and I like helping people find theirs."
+   ],
+   "minor": [
+    "I make something most weeks.",
+    "Creative work pays my bills and I love it.",
+    "My notebook goes everywhere with me.",
+    "There is always some project in progress around me."
+   ]
+  },
+  "volunteering": {
+   "label": "Volunteering",
+   "keywords": [
+    "volunteer",
+    "volunteering",
+    "community",
+    "garden",
+    "shelter",
+    "mentor",
+    "donate",
+    "charity",
+    "neighbourhood",
+    "clean",
+    "library",
+    "helping",
+    "giving"
+   ],
+   "main": [
+    "I help out at a community garden on Saturday mornings and the tomatoes are getting ambitious.",
+    "I volunteer at a local shelter and it has changed how I spend my free time.",
+    "I mentor a young person once a week and I get more from it than they do.",
+    "Neighbourhood clean ups are weirdly satisfying, and the group is lovely.",
+    "I believe in showing up, even when it is inconvenient.",
+    "I teach basic computer skills at the library, and the questions are wonderful.",
+    "I donate blood regularly and I always take a snack.",
+    "Being useful to other people is one of the surest routes to feeling good that I have found.",
+    "I organise a small monthly food drive and I am always recruiting.",
+    "I care about the place I live, and I try to act like it."
+   ],
+   "minor": [
+    "I volunteer a few hours each month.",
+    "I like giving back where I can.",
+    "Community matters a lot to me.",
+    "The people around me can count on me to show up."
+   ]
+  },
+  "pets": {
+   "label": "Pets",
+   "keywords": [
+    "dog",
+    "dogs",
+    "cat",
+    "cats",
+    "pet",
+    "pets",
+    "puppy",
+    "kitten",
+    "fur",
+    "rescue",
+    "animals",
+    "walks",
+    "paws"
+   ],
+   "main": [
+    "My dog decides the schedule in our home, and I have made my peace with it.",
+    "I have a cat who judges my life choices from the top of the bookshelf.",
+    "Long walks with a four legged companion are the best start to any day.",
+    "I foster rescue animals when I can, and I have learned to say goodbye with a smile.",
+    "I stop to meet every dog on the street, and I apologise in advance.",
+    "My home is covered in fur and I consider it decoration.",
+    "Ideally I meet someone who accepts that my animals come as a package.",
+    "I talk to animals as if they are colleagues.",
+    "I can tell you the name, breed and personality of every dog in my building.",
+    "A sleepy animal on my lap makes me feel I am doing life correctly."
+   ],
+   "minor": [
+    "A pet who is firmly in charge shares my home.",
+    "Animals are my favourite people.",
+    "I am a dog person who is open to cats.",
+    "Pet hair on my clothes is a permanent accessory."
+   ]
+  }
+ },
+ "generic": {
+  "openers": [
+   "Hello there, I am glad you found this page.",
+   "I am a curious person who likes small adventures.",
+   "This is my attempt at describing myself without sounding like a brochure.",
+   "Quick sketch: friendly, slightly reserved for the first ten minutes, chatty after that.",
+   "Strangers tend to chat with me on trains, so I assume I am approachable.",
+   "Here is a short, honest summary of me.",
+   "I keep revising myself, and I enjoy the editing.",
+   "My friends call me warm, stubborn and an excellent listener.",
+   "I believe in kindness, good conversation and second helpings.",
+   "Most days I am calm and occasionally chaotic.",
+   "I tend to overthink and then laugh about it.",
+   "I am more at ease in small groups than at big parties."
+  ],
+  "closers": [
+   "If some of this sounds familiar, come and say hello.",
+   "Tell me about something you are excited about right now.",
+   "A good conversation is what I am hoping for.",
+   "Send a note if you would like to swap stories.",
+   "Tell me what has been keeping you curious lately.",
+   "Bring your favourite recommendation and we can go from there.",
+   "That is the short version, and I am happy to tell you the long one.",
+   "Write back if something here made you smile.",
+   "Meeting people who are open to new things is a pleasure.",
+   "Let us see where a conversation goes."
+  ]
+ },
+ "weights": {
+  "travel": 1.3,
+  "cooking": 1.2,
+  "music": 1.2,
+  "fitness": 1.0,
+  "outdoors": 1.3,
+  "books": 1.2,
+  "technology": 0.9,
+  "family": 0.8,
+  "humour": 0.8,
+  "creative": 1.0,
+  "volunteering": 0.6,
+  "pets": 1.0
+ }
+}

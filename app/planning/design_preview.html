@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design preview: Profile Intelligence</title>
+<style>
+  :root {
+    --ivory: #FBF6EE; --ivory-deep: #F2E9DB; --line: #E3D6C3;
+    --plum-900: #2B0F30; --plum-700: #4F1F57; --plum-500: #7A3B83;
+    --rose-700: #9E2A52; --rose-600: #B8325F; --rose-100: #F8DCE5;
+    --gold-700: #7A5410; --gold-500: #C09A3E; --gold-200: #EBD9A6;
+    --char-900: #26222B; --char-600: #5B5561; --teal: #2F6F73;
+    --display: Georgia, "Times New Roman", serif;
+    --text: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ivory); color: var(--char-900); font: 16px/1.6 var(--text); }
+  a { color: var(--plum-700); }
+  :focus-visible { outline: 2px solid var(--plum-700); outline-offset: 2px; }
+  .skip { position: absolute; left: -999px; }
+  .skip:focus { left: 16px; top: 8px; background: var(--ivory); padding: 8px 12px; z-index: 2; }
+  header, main, footer { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  header { display: flex; align-items: center; justify-content: space-between; padding-top: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--line); flex-wrap: wrap; gap: 12px; }
+  .mark { font: 600 22px/1.15 var(--display); color: var(--plum-900); }
+  nav a { margin-left: 20px; text-decoration: none; color: var(--char-900); }
+  nav a[aria-current] { color: var(--plum-700); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px; }
+  .notice { background: var(--ivory-deep); border-bottom: 1px solid var(--line); text-align: center; padding: 8px 16px; font-size: 14px; color: var(--char-600); }
+  h1 { font: 600 36px/1.15 var(--display); color: var(--plum-900); margin: 40px 0 8px; }
+  h2 { font: 600 28px/1.15 var(--display); color: var(--plum-900); margin: 48px 0 12px; }
+  h3 { font: 600 18px/1.3 var(--text); margin: 24px 0 8px; }
+  p { max-width: 68ch; margin: 0 0 12px; }
+  .muted { color: var(--char-600); }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .sw { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: #fff; }
+  .sw div { height: 64px; }
+  .sw p { margin: 0; padding: 8px 10px; font-size: 13px; line-height: 1.4; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .btn { font: 600 16px var(--text); border-radius: 6px; padding: 12px 20px; border: 2px solid transparent; cursor: pointer; min-height: 44px; }
+  .btn.primary { background: var(--plum-700); color: var(--ivory); }
+  .btn.accent { background: var(--rose-600); color: #fff; }
+  .btn.quiet { background: transparent; color: var(--plum-700); border-color: var(--plum-700); }
+  .chip { display: inline-flex; gap: 6px; align-items: center; border-radius: 999px; padding: 2px 12px; font-size: 14px; background: var(--rose-100); color: var(--rose-700); }
+  .chip.gold { background: var(--gold-200); color: var(--plum-900); }
+  .pill { display: inline-block; border-radius: 999px; padding: 2px 14px; font-size: 13px; font-weight: 600; }
+  .pill.test { background: var(--plum-700); color: var(--ivory); }
+  .pill.val { background: var(--ivory-deep); color: var(--plum-900); border: 1px solid var(--line); }
+  .field { display: block; max-width: 420px; }
+  .field span { display: block; font-weight: 600; margin-bottom: 4px; }
+  .field textarea { width: 100%; min-height: 96px; border: 1px solid var(--char-600); border-radius: 6px; background: var(--ivory-deep); padding: 10px 12px; font: inherit; color: inherit; }
+  .hint { font-size: 14px; color: var(--char-600); }
+  .callout { max-width: 68ch; border: 1px solid var(--rose-700); border-radius: 14px; padding: 12px 16px; color: var(--rose-700); background: #fff; }
+  .stage { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 16px; }
+  @media (min-width: 1024px) { .stage { grid-template-columns: 340px 1fr; } }
+  .panel { background: var(--ivory-deep); border-radius: 14px; padding: 20px; }
+  .results { position: relative; padding-left: 64px; }
+  .results svg { position: absolute; left: 0; top: 0; width: 64px; height: 100%; }
+  .thread { fill: none; stroke: var(--gold-500); stroke-linecap: round; stroke-dasharray: 700; stroke-dashoffset: 700; animation: draw 600ms ease-out forwards; }
+  .thread:nth-child(2) { animation-delay: 90ms; } .thread:nth-child(3) { animation-delay: 180ms; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) { .thread { animation: none; stroke-dashoffset: 0; } }
+  .card { border: 1px solid var(--line); background: #fff; border-radius: 14px; padding: 16px 18px; margin-bottom: 16px; }
+  .card h3 { margin: 0 0 4px; font-family: var(--display); font-size: 20px; color: var(--plum-900); }
+  .meter { height: 8px; border-radius: 999px; background: var(--ivory-deep); overflow: hidden; margin: 8px 0; }
+  .meter i { display: block; height: 100%; background: var(--plum-700); }
+  .score { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .bars { max-width: 560px; }
+  .bar { display: grid; grid-template-columns: 170px 1fr 52px; gap: 10px; align-items: center; font-size: 14px; margin: 6px 0; }
+  .bar b { display: block; height: 18px; border-radius: 4px; }
+  table { border-collapse: collapse; font-size: 14px; }
+  td, th { border: 1px solid var(--line); padding: 6px 10px; text-align: left; background: #fff; }
+  footer { padding-top: 32px; padding-bottom: 48px; margin-top: 48px; border-top: 1px solid var(--line); color: var(--char-600); font-size: 14px; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="notice">Fictional profiles only. Please do not enter real personal details.</div>
+<header>
+  <div class="mark">Profile Intelligence</div>
+  <nav aria-label="Main"><a href="#discover" aria-current="page">Discover</a><a href="#lab">Lab</a><a href="#about">About</a></nav>
+</header>
+<main id="main">
+  <h1>Design preview</h1>
+  <p class="muted">A static sketch of the proposed look. Final fonts (Fraunces and Public Sans) are self hosted in the real application. This page uses Georgia and the system font as stand ins, so letter shapes and widths will differ. Names and numbers below are placeholders, not results.</p>
+
+  <h2>Colour</h2>
+  <div class="swatches" role="list">
+    <div class="sw" role="listitem"><div style="background:#FBF6EE"></div><p><b>ivory</b> #FBF6EE<br>page</p></div>
+    <div class="sw" role="listitem"><div style="background:#F2E9DB"></div><p><b>ivory deep</b> #F2E9DB<br>surfaces, fields</p></div>
+    <div class="sw" role="listitem"><div style="background:#2B0F30"></div><p><b>plum 900</b> #2B0F30<br>headings</p></div>
+    <div class="sw" role="listitem"><div style="background:#4F1F57"></div><p><b>plum 700</b> #4F1F57<br>primary, focus</p></div>
+    <div class="sw" role="listitem"><div style="background:#7A3B83"></div><p><b>plum 500</b> #7A3B83<br>chart series</p></div>
+    <div class="sw" role="listitem"><div style="background:#B8325F"></div><p><b>rose 600</b> #B8325F<br>accent</p></div>
+    <div class="sw" role="listitem"><div style="background:#9E2A52"></div><p><b>rose 700</b> #9E2A52<br>accent text</p></div>
+    <div class="sw" role="listitem"><div style="background:#F8DCE5"></div><p><b>rose 100</b> #F8DCE5<br>highlight</p></div>
+    <div class="sw" role="listitem"><div style="background:#C09A3E"></div><p><b>gold 500</b> #C09A3E<br>threads only (2.5:1)</p></div>
+    <div class="sw" role="listitem"><div style="background:#7A5410"></div><p><b>gold 700</b> #7A5410<br>gold text</p></div>
+    <div class="sw" role="listitem"><div style="background:#26222B"></div><p><b>charcoal 900</b> #26222B<br>body text</p></div>
+    <div class="sw" role="listitem"><div style="background:#2F6F73"></div><p><b>deep teal</b> #2F6F73<br>charts only</p></div>
+  </div>
+
+  <h2>Type</h2>
+  <p style="font:600 48px/1.15 var(--display);color:var(--plum-900);margin:0">Similar writing</p>
+  <p style="font:600 28px/1.15 var(--display);color:var(--plum-900)">Titles in a soft serif</p>
+  <p>Body text in a plain sans, 16 pixels, line height 1.6, never wider than 68 characters. Scores use tabular numerals: <span class="score">0.71</span> and <span class="score">0.68</span> line up.</p>
+
+  <h2>Controls</h2>
+  <div class="row">
+    <button class="btn primary">Find similar profiles</button>
+    <button class="btn accent">Show the evidence</button>
+    <button class="btn quiet">Edit profile</button>
+    <span class="chip">Shared: diet</span><span class="chip gold">Words: trail</span>
+    <span class="pill test">TEST, 11,393 users</span><span class="pill val">VALIDATION, training set</span>
+  </div>
+  <p class="hint" style="margin-top:12px">Use the Tab key to see the focus ring on each control.</p>
+  <div style="margin-top:16px"><label class="field"><span>About you</span><textarea aria-describedby="h1" placeholder="Write a few sentences about a fictional person"></textarea><small id="h1" class="hint">0 of 2,000 characters</small></label></div>
+  <div class="callout" style="margin-top:16px"><b>Limit.</b> Similar writing, not compatibility.</div>
+
+  <h2 id="discover">Discovery layout, with threads</h2>
+  <div class="stage">
+    <div class="panel">
+      <h3 style="margin-top:0">Your fictional profile</h3>
+      <p class="hint">Answers do not change the ranking. They are used to explain results.</p>
+      <button class="btn primary" style="width:100%">Find similar profiles</button>
+    </div>
+    <div>
+      <h3 style="margin-top:0">3 similar profiles</h3>
+      <div class="results">
+        <svg viewBox="0 0 64 360" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path class="thread" d="M2 20 C 36 20, 28 70, 62 70" stroke-width="3.5"/>
+          <path class="thread" d="M2 20 C 36 20, 28 190, 62 190" stroke-width="2.5"/>
+          <path class="thread" d="M2 20 C 36 20, 28 310, 62 310" stroke-width="1.5"/>
+        </svg>
+        <article class="card"><h3>Quiet Cartographer</h3><div class="meter" role="img" aria-label="Similarity 0.71"><i style="width:71%"></i></div><div class="score">Similarity 0.71</div><div class="row" style="margin-top:6px"><span class="chip">Shared: diet, pets</span><span class="chip gold">Words: trail, maps</span></div></article>
+        <article class="card"><h3>Late Night Baker</h3><div class="meter" role="img" aria-label="Similarity 0.68"><i style="width:68%"></i></div><div class="score">Similarity 0.68</div><div class="row" style="margin-top:6px"><span class="chip">Shared: job</span></div></article>
+        <article class="card"><h3>Patient Gardener</h3><div class="meter" role="img" aria-label="Similarity 0.61"><i style="width:61%"></i></div><div class="score">Similarity 0.61</div></article>
+      </div>
+      <p class="muted">Similar writing, not compatibility. <a href="#lab">See the evidence</a></p>
+    </div>
+  </div>
+
+  <h2 id="lab">Lab: a labelled result</h2>
+  <p><span class="pill val">VALIDATION</span> Ranked bars with the value printed on each bar, and a table view for every chart.</p>
+  <div class="bars" role="img" aria-label="Placeholder bar chart of three models">
+    <div class="bar"><span>Model A</span><b style="background:var(--plum-700);width:90%"></b><span class="score">0.39</span></div>
+    <div class="bar"><span>Model B</span><b style="background:var(--rose-600);width:80%"></b><span class="score">0.35</span></div>
+    <div class="bar"><span>Baseline</span><b style="background:var(--char-600);width:49%"></b><span class="score">0.21</span></div>
+  </div>
+  <p><button class="btn quiet" type="button" onclick="document.getElementById('t').hidden=!document.getElementById('t').hidden">View as table</button></p>
+  <table id="t" hidden><tr><th>Model</th><th>Score</th></tr><tr><td>Model A</td><td>0.39</td></tr><tr><td>Model B</td><td>0.35</td></tr><tr><td>Baseline</td><td>0.21</td></tr></table>
+  <p class="hint" id="about">All bars carry direct labels. Colour is never the only cue.</p>
+</main>
+<footer>The data behind the Lab comes from the notebook. Everything on Discover is fictional.</footer>
+</body>
+</html>

@@ -1,0 +1,18 @@
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "S603", "E501", "S307", "S102"]
+"scripts/*" = ["E501", "S101", "S311"]  # offline builders: long word lists, fixed seed on purpose
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+filterwarnings = [
+    # Starlette's test client now wants httpx2. This turns the old deprecation warning into a failure.
+    "error:Using `httpx` with `starlette.testclient` is deprecated:DeprecationWarning",
+]

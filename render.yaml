@@ -1,0 +1,18 @@
+# Render Blueprint for Profile Intelligence: one Docker web service on the Free plan.
+# This describes the service that is live at https://profile-intelligence.onrender.com. It was created in the Render
+# dashboard with these settings. Applying this file to another account creates a copy of it.
+# There are no secrets: the application is public mode only and reads no credential. Every value below is safe to
+# keep in Git.
+services:
+  - type: web
+    name: profile-intelligence
+    runtime: docker
+    plan: free
+    region: frankfurt             # cannot be changed after the service exists
+    dockerfilePath: ./app/deploy/Dockerfile.render
+    dockerContext: .
+    healthCheckPath: /api/v1/health
+    autoDeployTrigger: "off"      # a deploy happens only when you ask for one, never on a push
+    envVars:
+      - key: PROFILE_APP_MODE
+        value: public
